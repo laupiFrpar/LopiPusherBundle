@@ -21,13 +21,13 @@ class Pusher
         $this->container = $container;
     }
     
-    public function trigger($channelName, $eventName, $body, $socketId = null)
+    public function trigger($channelName, $eventName, $body, $socketId = null, $debug = false)
     {
         # Added channel in the URL
         $pathUrl = $this->pathUrl . '/channels/' . $channelName . '/events';
         $bodyJson = json_encode($body);
         
-        $query = 'auth_key=' . $this->appId . 
+        $query = 'auth_key=' . $this->key . 
             '&auth_timestamp=' . time() . 
             '&auth_version=' . $this->container->getParameter('lopi_pusher.auth.version')  . 
             '&body_md5=' . md5($bodyJson) . 
@@ -56,12 +56,14 @@ class Pusher
         
         if ($response != "202 ACCEPTED\n") {
             return false;
+        } elseif ($debug) {
+            var_dump($response);
         }
         
         return true;
     }
     
-    protected function authSignature($pathUrl, $authTimestamp, $authVersion, $bodyMd5, $eventName)
+    protected function authSignature($pathUrl, $query)
     {
         $query = "POST\n" . $pathUrl . "\n" . $query;
         
