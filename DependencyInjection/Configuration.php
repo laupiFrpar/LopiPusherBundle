@@ -34,6 +34,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('secret')
                     ->isRequired()
                     ->end()
+                ->booleanNode('encrypted')
+                    ->defaultValue(false)
+                    ->end()
             ->end()
         ;
 

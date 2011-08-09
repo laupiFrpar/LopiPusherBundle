@@ -7,5 +7,6 @@
     <parameters>
 		<parameter key="lopi_pusher.host">http://api.pusherapp.com</parameter>
 		<parameter key="lopi_pusher.auth.version">1.0</parameter>
+		<parameter key="lopi_pusher.encrypted">false</parameter>
 	</parameters>
 </container>

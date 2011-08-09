@@ -36,6 +36,10 @@ class LopiPusherExtension extends Extension
         
         $container->setParameter('lopi_pusher.secret', $config['secret']);
         
+        if (isset($config['encrypted'])) {
+            $container->setParameter('lopi_pusher.encrypted', $config['encrypted']);
+        }
+        
         $loader->load('services.xml');
     }
 

@@ -21,7 +21,12 @@ class Pusher
         $this->container = $container;
     }
     
-    public function trigger($channelName, $eventName, $body, $socketId = null, $debug = false)
+    public function getKey()
+    {
+        return $this->key;
+    }
+    
+    public function trigger($channelName, $eventName, $body, $socketId = null)
     {
         # Added channel in the URL
         $pathUrl = $this->pathUrl . '/channels/' . $channelName . '/events';
