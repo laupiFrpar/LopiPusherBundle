@@ -12,6 +12,7 @@
 		    <argument>%lopi_pusher.app.id%</argument>
 		    <argument>%lopi_pusher.key%</argument>
 		    <argument>%lopi_pusher.secret%</argument>
+			<argument type="service" id="service_container"/>
 	    </service>
 	</services>
 </container>
