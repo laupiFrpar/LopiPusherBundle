@@ -61,8 +61,6 @@ class Pusher
         
         if ($response != "202 ACCEPTED\n") {
             return false;
-        } elseif ($debug) {
-            var_dump($response);
         }
         
         return true;
