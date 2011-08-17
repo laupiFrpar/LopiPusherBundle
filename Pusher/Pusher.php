@@ -3,6 +3,7 @@
 namespace Lopi\Bundle\PusherBundle\Pusher;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Pusher
 {
@@ -60,7 +61,9 @@ class Pusher
         curl_close($curlHandle);
         
         if ($response != "202 ACCEPTED\n") {
-            return false;
+			$statusCode = substr($response, 0, 3);
+			$message = $response . "\n" . 'Pusher Request rejected ' . $this->container->getParameter('lopi_pusher.host') . '/' . $pathUrl . '?' . $query;
+			throw new HttpException($statusCode, $message);
         }
         
         return true;
