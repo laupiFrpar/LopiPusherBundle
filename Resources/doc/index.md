@@ -31,8 +31,8 @@ Add the following lines in your `deps` file:
 
 ```
 [LopiPusherBundle]
-    git=git://github.com/LaupiFrpar/LopiPusherBundle.git
-    target=bundles/Lopi/Bundle/LopiPusherBundle
+    git=http://github.com/laupiFrpar/LopiPusherBundle.git
+    target=bundles/Lopi/Bundle/PusherBundle
 ```
 
 Now, run the vendors script to download the bundle:
@@ -76,7 +76,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Lopi\Bundle\PusherBundle\LopiPuhserBundle(),
+        new Lopi\Bundle\PusherBundle\LopiPusherBundle(),
     );
 }
 ```
