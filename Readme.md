@@ -1,6 +1,8 @@
 LopiPusherBundle
 ================
 
+[![Build Status](https://secure.travis-ci.org/laupiFrpar/LopiPusherBundle.png)](http://travis-ci.org/laupiFrpar/LopiPusherBundle)
+
 The LopiPusherBundle adds support for a pusher 
 
 Features include:
