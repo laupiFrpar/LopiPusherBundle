@@ -15,7 +15,8 @@ class PusherTest extends \PHPUnit_Framework_TestCase
         $configs = array('lopi_pusher' => array(
 			'app_id' => 'app_id',
 			'key' => 'key',
-			'secret' => 'secret'
+			'secret' => 'secret',
+            'auth_service_id' => 'acme_service_id'
 			));
 		$extension = new LopiPusherExtension();
 		$extension->load($configs, $container);
@@ -28,6 +29,7 @@ class PusherTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue(is_string($container->getParameter('lopi_pusher.auth.version')));
 		$this->assertTrue("1.0" === $container->getParameter('lopi_pusher.auth.version'));
 		$this->assertFalse($container->getParameter('lopi_pusher.encrypted'));
+        $this->assertEquals('acme_service_id', $container->getAlias('lopi_pusher.authenticator'));
     }
 	
 	public function testLoadWithConfig()
@@ -38,6 +40,7 @@ class PusherTest extends \PHPUnit_Framework_TestCase
 			'key' => 'key',
 			'secret' => 'secret',
 			'encrypted' => true,
+            'auth_service_id' => 'acme_service_id'
 			));
 		$extension = new LopiPusherExtension();
 		$extension->load($configs, $container);
@@ -50,5 +53,6 @@ class PusherTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue(is_string($container->getParameter('lopi_pusher.auth.version')));
 		$this->assertTrue("1.0" === $container->getParameter('lopi_pusher.auth.version'));
 		$this->assertTrue($container->getParameter('lopi_pusher.encrypted'));
+        $this->assertEquals('acme_service_id', $container->getAlias('lopi_pusher.authenticator'));
     }
 }

@@ -37,6 +37,9 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('encrypted')
                     ->defaultValue(false)
                     ->end()
+                ->scalarNode('auth_service_id')
+                    ->defaultNull()
+                    ->end()
             ->end()
         ;
 
