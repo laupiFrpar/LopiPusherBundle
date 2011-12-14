@@ -29,7 +29,7 @@ class PusherTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue(is_string($container->getParameter('lopi_pusher.auth.version')));
 		$this->assertTrue("1.0" === $container->getParameter('lopi_pusher.auth.version'));
 		$this->assertFalse($container->getParameter('lopi_pusher.encrypted'));
-        $this->assertEquals('acme_service_id', $container->getAlias('lopi_pusher.authenticator'));
+        $this->assertEquals('acme_service_id', (string) $container->getAlias('lopi_pusher.authenticator'));
     }
 	
 	public function testLoadWithConfig()
@@ -53,6 +53,6 @@ class PusherTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue(is_string($container->getParameter('lopi_pusher.auth.version')));
 		$this->assertTrue("1.0" === $container->getParameter('lopi_pusher.auth.version'));
 		$this->assertTrue($container->getParameter('lopi_pusher.encrypted'));
-        $this->assertEquals('acme_service_id', $container->getAlias('lopi_pusher.authenticator'));
+        $this->assertEquals('acme_service_id', (string) $container->getAlias('lopi_pusher.authenticator'));
     }
 }
