@@ -37,7 +37,7 @@ class AuthController extends ContainerAware
         $code = hash_hmac('sha256', $socketId.":".$channelName, $secret);
         $auth = $key.":".$code;
         
-        if (strpos('presence', $channelName) === 0) {
+        if (strpos($channelName, 'presence') === 0) {
             $responseData = array(
                 'auth'          => $auth,
                 'channel_data'  => array(
