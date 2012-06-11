@@ -40,10 +40,10 @@ class AuthController extends ContainerAware
         if (strpos($channelName, 'presence') === 0) {
             $responseData = array(
                 'auth'          => $auth,
-                'channel_data'  => array(
+                'channel_data'  => json_encode(array(
                     'user_id'	=> $this->container->get('lopi_pusher.authenticator')->getUserId(),
                     'user_info' => $this->container->get('lopi_pusher.authenticator')->getUserInfo()
-                )
+                ))
             );
         } else {
             $responseData = array(
