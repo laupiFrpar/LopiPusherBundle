@@ -36,8 +36,22 @@ class AuthController extends ContainerAware
 
         $code = hash_hmac('sha256', $socketId.":".$channelName, $secret);
         $auth = $key.":".$code;
+        
+        if (strpos('presence', $channelName) === 0) {
+            $responseData = array(
+                'auth'          => $auth,
+                'channel_data'  => array(
+                    'user_id'	=> $this->container->get('lopi_pusher.authenticator')->getUserId(),
+                    'user_info' => $this->container->get('lopi_pusher.authenticator')->getUserInfo()
+                )
+            );
+        } else {
+            $responseData = array(
+                'auth'          => $auth
+            );
+        }
 
-        return new Response(json_encode(array('auth' => $auth)), 200, array('Content-Type' => 'application/json'));
+        return new Response(json_encode($responseData), 200, array('Content-Type' => 'application/json'));
     }
 
 }
