@@ -1,5 +1,5 @@
 {
-    "name": "laupiFrpar/pusher-bundle",
+    "name": "laupifrpar/pusher-bundle",
     "type": "symfony-bundle",
     "description": "A Pusher bundle for Symfony2",
     "keywords": ["pusher", "nosql", "symfony"],
