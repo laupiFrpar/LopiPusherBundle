@@ -1,5 +1,4 @@
-Getting Started With LopiPusherBundle
-=====================================
+# Getting Started With LopiPusherBundle
 
 Pusher is a simple hosted API for adding realtime bi-directional functionality via WebSockets to web and mobile apps, or any other Internet connected device.
 
@@ -10,89 +9,45 @@ This bundle let you use Pusher simply.
 
 ## Installation
 
-Installation is a quick (I promise!) 4 step process:
+To install LopiPubsherBundle with Composer just add the following to your `composer.json` file:
 
-1. Download LopiPusherBundle
-2. Configure the Autoloader
-3. Enable the Bundle
-4. Configure your application
+    // composer.json
+    {
+        // ...
+        require: {
+            // ...
+            "laupifrpar/pusher-bundle": "dev-master"
+        }
+    }
 
-### Step 1: Download LopiPusherBundle
+Then, you can install the new dependencies by running Composer's ``update``
+command from the directory where your ``composer.json`` file is located:
 
-Ultimately, the LopiPusherBundle files should be downloaded to the
-`vendor/bundles/Lopi/Bundle/PusherBundle` directory.
+    $ php composer.phar update
 
-This can be done in several ways, depending on your preference. The first
-method is the standard Symfony2 method.
+Now, Composer will automatically download all required files, and install them
+for you. All that is left to do is to update your ``AppKernel.php`` file, and
+register the new bundle:
 
-**Using the vendors script**
+    <?php
 
-Add the following lines in your `deps` file:
-
-```
-[LopiPusherBundle]
-    git=http://github.com/laupiFrpar/LopiPusherBundle.git
-    target=bundles/Lopi/Bundle/PusherBundle
-```
-
-Now, run the vendors script to download the bundle:
-
-``` bash
-$ php bin/vendors install
-```
-
-**Using submodules**
-
-If you prefer instead to use git submodules, the run the following:
-
-``` bash
-$ git submodule add git://github.com/LaupiFrpar/LopiPusherBundle.git vendor/bundles/Lopi/Bundle/PusherBundle
-$ git submodule update --init
-```
-
-### Step 2: Configure the Autoloader
-
-Add the `Lopi` namespace to your autoloader:
-
-``` php
-<?php
-// app/autoload.php
-
-$loader->registerNamespaces(array(
-    // ...
-    'Lopi' => __DIR__.'/../vendor/bundles',
-));
-```
-
-### Step 3: Enable the bundle
-
-Finally, enable the bundle in the kernel:
-
-``` php
-<?php
-// app/AppKernel.php
-
-public function registerBundles()
-{
+    // in AppKernel::registerBundles()
     $bundles = array(
         // ...
         new Lopi\Bundle\PusherBundle\LopiPusherBundle(),
+        // ...
     );
-}
-```
 
-### Step 4: Configure your application
+### Configure your application
 
 You must configure the pusher
 
-``` yaml
-# app/config/config.yml
-lopi_pusher:
-    app_id: xxx
-	key: xxx
-	secret: xxx
-	auth_service_id: xxx # optional if you want to use private or presence channels
-```
+    # app/config/config.yml
+    lopi_pusher:
+        app_id: xxx
+	    key: xxx
+	    secret: xxx
+	    auth_service_id: xxx # optional if you want to use private or presence channels
 
 All parameters must correspond to http://app.pusherapp.com/apps/xxxx/api_access in the first block.
 
@@ -102,24 +57,22 @@ If you'd like to use private or presence, you need to add an authorization servi
 service that implements `Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface` and include it's
 service id in the lopi_pusher `auth_service_id` configuration parameter.
 
-``` php
-<?php
-// My/Bundle/AcmeBundle/Pusher/ChannelAuthenticator
+    <?php
+    // My/Bundle/AcmeBundle/Pusher/ChannelAuthenticator
 
-namespace My\Bundle\AcmeBundle\Pusher
+    namespace My\Bundle\AcmeBundle\Pusher
 
-use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface
+    use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface
 
-class ChannelAuthenticator implements ChannelAuthenticationInterface
-{
-    public function authenticate($socketId, $channelName)
+    class ChannelAuthenticator implements ChannelAuthenticationInterface
     {
-        // logic here
+        public function authenticate($socketId, $channelName)
+        {
+            // logic here
 
-        return true;
+            return true;
+        }
     }
-}
-```
 
 Additionally, enable the route by adding the following to your `app\config\routing.yml` configuration:
 
@@ -140,17 +93,12 @@ In some symfony configurations, you may need to manually specify the channel_aut
 Now that you have completed the basic installation and configuration of the
 LopiPusherBundle, you are ready to use the pusher.
 
-``` php
-<?php
-$pusher = $this->container->get('lopi_pusher.pusher');
-$pusher->trigger('channel name', 'event name', 'message');
-```
+    <?php
+    $pusher = $this->container->get('lopi_pusher.pusher');
+    $pusher->trigger('channel name', 'event name', 'message');
 
 If you want use the socket id,
 
-``` php
-<?php
-<?php
-$pusher = $this->container->get('lopi_pusher.pusher');
-$pusher->trigger('channel name', 'event name', 'message', 'socket id');
-```
+    <?php
+    $pusher = $this->container->get('lopi_pusher.pusher');
+    $pusher->trigger('channel name', 'event name', 'message', 'socket id');
