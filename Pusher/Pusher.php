@@ -51,7 +51,7 @@ class Pusher
         }
         
         # Set cURL opts and execute request
-        curl_setopt($curlHandle, CURLOPT_URL, $this->container->getParameter('lopi_pusher.host') . '/' . $pathUrl . '?' . $query );
+        curl_setopt($curlHandle, CURLOPT_URL, $this->container->getParameter('lopi_pusher.host') . $pathUrl . '?' . $query );
         curl_setopt($curlHandle, CURLOPT_HTTPHEADER, array ( "Content-Type: application/json" ) );
         curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt($curlHandle, CURLOPT_POST, 1 );
