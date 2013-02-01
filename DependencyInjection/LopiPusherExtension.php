@@ -43,6 +43,10 @@ class LopiPusherExtension extends Extension
         if (isset($config['auth_service_id'])) {
             $container->setAlias('lopi_pusher.authenticator', $config['auth_service_id']);
         }
+
+        if (isset($config['serializer'])) {
+            $container->setAlias('lopi_pusher.serializer', $config['serializer']);
+        }
 		
         $loader->load('services.xml');
     }

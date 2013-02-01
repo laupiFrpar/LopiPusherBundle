@@ -31,8 +31,14 @@ class Pusher
     {
         # Added channel in the URL
         $pathUrl = $this->pathUrl . '/channels/' . $channelName . '/events';
-        $bodyJson = json_encode($body);
-        
+
+        if ($this->container->has('lopi_pusher.serializer')) {
+            $serializer = $this->container->get('lopi_pusher.serializer');
+            $bodyJson = $serializer->serialize($body, 'json');
+        } else {
+            $bodyJson = json_encode($body);
+        }
+
         $query = 'auth_key=' . $this->key . 
             '&auth_timestamp=' . time() . 
             '&auth_version=' . $this->container->getParameter('lopi_pusher.auth.version')  . 
