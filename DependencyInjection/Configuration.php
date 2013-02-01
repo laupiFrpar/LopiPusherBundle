@@ -40,6 +40,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('auth_service_id')
                     ->defaultNull()
                     ->end()
+                ->scalarNode('serializer')
+                    ->defaultNull()
+                    ->end()
             ->end()
         ;
 
