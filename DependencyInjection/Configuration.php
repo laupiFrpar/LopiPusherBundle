@@ -12,7 +12,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    
+
     /**
      * Generates the configuration tree builder.
      *
@@ -25,23 +25,15 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('app_id')
-                    ->isRequired()
-                    ->end()
-                ->scalarNode('key')
-                    ->isRequired()
-                    ->end()
-                ->scalarNode('secret')
-                    ->isRequired()
-                    ->end()
-                ->booleanNode('encrypted')
-                    ->defaultValue(false)
-                    ->end()
-                ->scalarNode('auth_service_id')
-                    ->defaultNull()
-                    ->end()
-            ->end()
-        ;
+                ->scalarNode('app_id')->isRequired()->end()
+                ->scalarNode('key')->isRequired()->end()
+                ->scalarNode('secret')->isRequired()->end()
+                ->booleanNode('debug')->defaultValue(false)->end()
+                ->scalarNode('host')->defaultValue('http://api.pusherapp.com')->end()
+                ->scalarNode('port')->defaultValue('80')->end()
+                ->scalarNode('timeout')->defaultValue('30')->end()
+                ->scalarNode('auth_service_id')->defaultNull()->end()
+            ->end();
 
         return $treeBuilder;
     }

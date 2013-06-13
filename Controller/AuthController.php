@@ -1,7 +1,4 @@
 <?php
-/*
- *
- */
 
 namespace Lopi\Bundle\PusherBundle\Controller;
 
@@ -11,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
+ * AuthController
+ *
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>
  */
 class AuthController extends ContainerAware
@@ -21,6 +20,8 @@ class AuthController extends ContainerAware
      * and       http://pusher.com/docs/auth_signatures
      *
      * @param Request $request
+     *
+     * @return Response
      */
     public function authAction(Request $request)
     {
@@ -36,24 +37,23 @@ class AuthController extends ContainerAware
 
         if (strpos($channelName, 'presence') === 0) {
             $userData = json_encode(array(
-                    'user_id'	=> $this->container->get('lopi_pusher.authenticator')->getUserId(),
-                    'user_info' => $this->container->get('lopi_pusher.authenticator')->getUserInfo()
+                'user_id' => $this->container->get('lopi_pusher.authenticator')->getUserId(),
+                'user_info' => $this->container->get('lopi_pusher.authenticator')->getUserInfo()
             ));
-            $code = hash_hmac('sha256', $socketId.':'.$channelName.':'.$userData, $secret);
-            $auth = $key.':'.$code;
+            $code = hash_hmac('sha256', $socketId . ':' . $channelName . ':' . $userData, $secret);
+            $auth = $key . ':' . $code;
             $responseData = array(
-                'auth'          => $auth,
-                'channel_data'  => $userData
+                'auth' => $auth,
+                'channel_data' => $userData
             );
         } else {
-            $code = hash_hmac('sha256', $socketId.':'.$channelName, $secret);
-            $auth = $key.':'.$code;
+            $code = hash_hmac('sha256', $socketId . ':' . $channelName, $secret);
+            $auth = $key . ':' . $code;
             $responseData = array(
-                'auth'          => $auth
+                'auth' => $auth
             );
         }
 
         return new Response(json_encode($responseData), 200, array('Content-Type' => 'application/json'));
     }
-
 }

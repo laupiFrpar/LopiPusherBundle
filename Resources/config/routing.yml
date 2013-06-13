@@ -1,5 +1,0 @@
-lopi_pusher_bundle_auth:
-    pattern:       /
-    defaults:     { _controller: LopiPusherBundle:Auth:auth }
-    requirements:
-        _method:  POST
