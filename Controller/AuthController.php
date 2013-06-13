@@ -2,6 +2,8 @@
 
 namespace Lopi\Bundle\PusherBundle\Controller;
 
+use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
+
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,20 +27,25 @@ class AuthController extends ContainerAware
      */
     public function authAction(Request $request)
     {
+        if (!$this->container->has('lopi_pusher.authenticator')) {
+            throw new Exception('The authenticator service does not exsit.');
+        }
+
+        $authenticator = $this->container->get('lopi_pusher.authenticator');
         $socketId = $request->get('socket_id');
         $channelName = $request->get('channel_name');
 
-        if (!$this->container->get('lopi_pusher.authenticator')->authenticate($socketId, $channelName)) {
+        if (!$authenticator->authenticate($socketId, $channelName)) {
             throw new AccessDeniedException('Request authentication denied');
         }
 
         $secret = $this->container->getParameter('lopi_pusher.secret');
         $key = $this->container->getParameter('lopi_pusher.key');
 
-        if (strpos($channelName, 'presence') === 0) {
+        if (strpos($channelName, 'presence') === 0 && $authenticator instanceof ChannelAuthenticatorPresenceInterface) {
             $userData = json_encode(array(
-                'user_id' => $this->container->get('lopi_pusher.authenticator')->getUserId(),
-                'user_info' => $this->container->get('lopi_pusher.authenticator')->getUserInfo()
+                'user_id' => $authenticator->getUserId(),
+                'user_info' => $authenticator->getUserInfo()
             ));
             $code = hash_hmac('sha256', $socketId . ':' . $channelName . ':' . $userData, $secret);
             $auth = $key . ':' . $code;
