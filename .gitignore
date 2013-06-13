@@ -17,5 +17,6 @@ xcuserdata
 .svn
 CVS
 
-vendor/*
-!vendor/vendors.php
+vendor
+
+composer.lock

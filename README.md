@@ -10,25 +10,11 @@ This bundle is under the MIT license.
 
 ## Installation
 
-To install LopiPubsherBundle with Composer just add the following to your `composer.json` file:
+Use the [composer](http://getcomposer.org) to install this bundle.
 
-    // composer.json
-    {
-        // ...
-        require: {
-            // ...
-            "laupifrpar/pusher-bundle": "dev-master"
-        }
-    }
+    $ composer require laupifrpar/pusher-bundle
 
-Then, you can install the new dependencies by running Composer's `update`
-command from the directory where your `composer.json` file is located:
-
-    $ php composer.phar update
-
-Now, Composer will automatically download all required files, and install them
-for you. All that is left to do is to update your `AppKernel.php` file, and
-register the new bundle:
+Then update your `AppKernel.php` file, and register the new bundle:
 
     <?php
 
@@ -45,14 +31,29 @@ If you have not a Pusher account, thank you to [sign up](https://app.pusherapp.c
 
 ### General
 
-This is the configuration in yml
+This is the default configuration in yml:
 
     # app/config/config.yml
     lopi_pusher:
-        app_id: xxx
-	    key: xxx
-	    secret: xxx
-	    auth_service_id: xxx # optional if you want to use private or presence channels
+        app_id: <your_app_id>
+        key: <your_key>
+        secret: <your_secret>
+
+        # Default configuration
+        debug: false # true if you want use the debug of all requests
+        host: http://api.pusherapp.com
+        port: 80
+        timeout: 30
+
+        # Optional configuration
+        auth_service_id: <the_auth_service_id> # optional if you want to use private or presence channels
+
+By default, calls will be made over a non-encrypted connection. To change this to make calls over HTTPS:
+
+    # app/config/config.yml
+    lopi_pusher:
+        host: https://api.pusherapp.com
+        port: 443
 
 ### Private and Presence channel authentication (optional)
 
@@ -83,8 +84,8 @@ Additionally, enable the route by adding the following to your `app\config\routi
 
     # app\config\routing.yml
     lopi_pusher:
-        resource: "@LopiPusherBundle/Resources/config/routing.yml"
-        prefix:   /pusher/auth
+        resource: "@LopiPusherBundle/Resources/config/routing.xml"
+        prefix:   /pusher
 
 In some symfony configurations, you may need to manually specify the channel_auth_endpoint: (not required in most setups)
 
@@ -95,18 +96,12 @@ In some symfony configurations, you may need to manually specify the channel_aut
 
 ## Use LopiPusherBundle
 
-Now that you have completed the basic installation and configuration of the
-LopiPusherBundle, you are ready to use the pusher.
+Get the pusher service
 
     <?php
     $pusher = $this->container->get('lopi_pusher.pusher');
-    $pusher->trigger('channel name', 'event name', 'message');
 
-If you want use the socket id,
-
-    <?php
-    $pusher = $this->container->get('lopi_pusher.pusher');
-    $pusher->trigger('channel name', 'event name', 'message', 'socket id');
+See the [pusher's documentation](https://github.com/pusher/pusher-php-server#publishingtriggering-events) to use the pusher service
 
 ## Reporting an issue or a feature request
 

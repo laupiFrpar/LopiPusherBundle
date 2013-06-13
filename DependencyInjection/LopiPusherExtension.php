@@ -2,51 +2,45 @@
 
 namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Definition\Processor;
 
+/**
+ * LopiPusherExtension
+ *
+ */
 class LopiPusherExtension extends Extension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('config.xml');
-        
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        
-        if (!isset($config['app_id']) || $config['app_id'] === null) {
-            throw new \InvalidArgumentException('Please set the app_id of Pusher');
-        }
-        
-        $container->setParameter('lopi_pusher.app.id', $config['app_id']);
-        
-        if (!isset($config['key']) || $config['key'] === null) {
-            throw new \InvalidArgumentException('Please set the key of Pusher');
-        }
-        
-        $container->setParameter('lopi_pusher.key', $config['key']);
-        
-        if (!isset($config['secret']) || $config['secret'] === null) {
-            throw new \InvalidArgumentException('Please set the secret of Pusher');
-        }
-        
-        $container->setParameter('lopi_pusher.secret', $config['secret']);
-        
-        if (isset($config['encrypted'])) {
-            $container->setParameter('lopi_pusher.encrypted', $config['encrypted']);
-        }
 
-        if (isset($config['auth_service_id'])) {
+        $container->setParameter('lopi_pusher.app.id', $config['app_id']);
+        $container->setParameter('lopi_pusher.key', $config['key']);
+        $container->setParameter('lopi_pusher.secret', $config['secret']);
+        $container->setParameter('lopi_pusher.debug', $config['debug']);
+        $container->setParameter('lopi_pusher.host', $config['host']);
+        $container->setParameter('lopi_pusher.port', $config['port']);
+        $container->setParameter('lopi_pusher.timeout', $config['timeout']);
+
+        if (null !== $config['auth_service_id']) {
             $container->setAlias('lopi_pusher.authenticator', $config['auth_service_id']);
         }
-		
+
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'lopi_pusher';
