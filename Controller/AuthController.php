@@ -35,7 +35,7 @@ class AuthController extends ContainerAware
         $authenticator = $this->container->get('lopi_pusher.authenticator');
         $socketId = $request->get('socket_id');
         $channelName = $request->get('channel_name');
-        $data = $socketId . ':' . $channelName
+        $data = $socketId . ':' . $channelName;
 
         if (!$authenticator->authenticate($socketId, $channelName)) {
             throw new AccessDeniedException('Request authentication denied');
