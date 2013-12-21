@@ -69,14 +69,14 @@ First, create an authorization service that implements `Lopi\Bundle\PusherBundle
 
     namespace My\Bundle\AcmeBundle\Pusher
 
-    use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface
+    use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
 
-    class ChannelAuthenticator implements ChannelAuthenticationInterface
+    class ChannelAuthenticator implements ChannelAuthenticatorInterface
     {
         public function authenticate($socketId, $channelName)
         {
             // logic here
-            …
+
             return true;
         }
     }
