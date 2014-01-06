@@ -29,7 +29,7 @@ class AuthController extends ContainerAware
     public function authAction(Request $request)
     {
         if (!$this->container->has('lopi_pusher.authenticator')) {
-            throw new Exception('The authenticator service does not exsit.');
+            throw new \Exception('The authenticator service does not exsit.');
         }
 
         $authenticator = $this->container->get('lopi_pusher.authenticator');
