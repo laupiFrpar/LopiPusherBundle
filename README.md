@@ -1,9 +1,10 @@
 # LopiPusherBundle
 
-[![Latest Stable Version](https://poser.pugx.org/laupifrpar/pusher-bundle/v/stable.png)](https://packagist.org/packages/laupifrpar/pusher-bundle)
-[![Latest Unstable Version](https://poser.pugx.org/laupifrpar/pusher-bundle/v/unstable.png)](https://packagist.org/packages/laupifrpar/pusher-bundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/fc5c7590-2d84-47b0-b1e9-82b72c69767a/mini.png)](https://insight.sensiolabs.com/projects/fc5c7590-2d84-47b0-b1e9-82b72c69767a)
 [![Build Status](https://secure.travis-ci.org/laupiFrpar/LopiPusherBundle.png)](http://travis-ci.org/laupiFrpar/LopiPusherBundle)
+[![Latest Stable Version](https://poser.pugx.org/laupifrpar/pusher-bundle/v/stable.png)](https://packagist.org/packages/laupifrpar/pusher-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/laupifrpar/pusher-bundle/v/unstable.png)](https://packagist.org/packages/laupifrpar/pusher-bundle)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/laupiFrpar/lopipusherbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 This bundle let you use Pusher simply.
 
@@ -114,7 +115,3 @@ When reporting a bug, it may be a good idea to reproduce it in a basic project
 built using the [Symfony Standard Edition](https://github.com/symfony/symfony-standard)
 to allow developers of the bundle to reproduce the issue by simply cloning it
 and following some steps.
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/laupiFrpar/lopipusherbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
