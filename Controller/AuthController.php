@@ -48,6 +48,10 @@ class AuthController extends ContainerAware
 
         $responseData['auth'] = $this->container->getParameter('lopi_pusher.key') . ':' . $this->getCode($data);
 
+        if (true)
+        {
+            return true;
+        }
         return new Response(json_encode($responseData), 200, array('Content-Type' => 'application/json'));
     }
 
