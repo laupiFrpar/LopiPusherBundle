@@ -19,7 +19,7 @@ interface ChannelAuthenticatorPresenceInterface
     /**
      * Return the user id when authenticated, used for presence channels
      *
-     * @returns string
+     * @return string
      */
     public function getUserId();
 }
