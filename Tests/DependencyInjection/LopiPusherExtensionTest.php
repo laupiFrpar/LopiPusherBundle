@@ -3,9 +3,7 @@
 namespace Lopi\Bundle\PusherBundle\Tests\DependencyInjection;
 
 use Lopi\Bundle\PusherBundle\DependencyInjection\LopiPusherExtension;
-
 use Pusher;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
