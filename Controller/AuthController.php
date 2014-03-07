@@ -31,6 +31,7 @@ class AuthController extends ContainerAware
             throw new \Exception('The authenticator service does not exsit.');
         }
 
+        $responseData = array();
         $authenticator = $this->container->get('lopi_pusher.authenticator');
         $socketId = $request->get('socket_id');
         $channelName = $request->get('channel_name');
