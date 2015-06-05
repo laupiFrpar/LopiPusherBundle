@@ -16,5 +16,10 @@
             <argument>%lopi_pusher.timeout%</argument>
         </service>
 
+        <service id="lopi_pusher.logger" class="Lopi\Bundle\PusherBundle\Logger\DebugLogger" public="false">
+            <tag name="monolog.logger" channel="pusher" />
+            <argument type="service" id="logger" />
+        </service>
+
     </services>
 </container>

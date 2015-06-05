@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('key')->isRequired()->end()
                 ->scalarNode('secret')->isRequired()->end()
                 ->booleanNode('debug')->defaultValue(false)->end()
+                ->booleanNode('log')->defaultValue(false)->end()
                 ->scalarNode('host')->defaultValue('http://api.pusherapp.com')->end()
                 ->scalarNode('port')->defaultValue('80')->end()
                 ->scalarNode('timeout')->defaultValue('30')->end()
