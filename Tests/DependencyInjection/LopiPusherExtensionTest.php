@@ -5,6 +5,7 @@ namespace Lopi\Bundle\PusherBundle\Tests\DependencyInjection;
 use Lopi\Bundle\PusherBundle\DependencyInjection\LopiPusherExtension;
 use Pusher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * PusherTest
@@ -37,6 +38,8 @@ class PusherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('80', $container->getParameter('lopi_pusher.port'));
         $this->assertEquals('30', $container->getParameter('lopi_pusher.timeout'));
         $this->assertEquals('acme_service_id', (string) $container->getAlias('lopi_pusher.authenticator'));
+
+        $this->assertFalse($container->getDefinition('lopi_pusher.pusher')->hasMethodCall('set_logger'));
     }
 
     /**
@@ -45,11 +48,14 @@ class PusherTest extends \PHPUnit_Framework_TestCase
     public function testLoadWithConfig()
     {
         $container = new ContainerBuilder();
+        $container->setDefinition('logger', new Definition('Symfony\Bridge\Monolog\Logger', array('pusher')));
+
         $configs = array('lopi_pusher' => array(
             'app_id' => 'app_id',
             'key' => 'key',
             'secret' => 'secret',
             'debug' => true,
+            'log' => true,
             'host' => 'https://api.pusherapp.com',
             'port' => '443',
             'timeout' => '60',
@@ -67,5 +73,7 @@ class PusherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('443', $container->getParameter('lopi_pusher.port'));
         $this->assertEquals('60', $container->getParameter('lopi_pusher.timeout'));
         $this->assertEquals('acme_service_id', (string) $container->getAlias('lopi_pusher.authenticator'));
+
+        $this->assertTrue($container->getDefinition('lopi_pusher.pusher')->hasMethodCall('set_logger'));
     }
 }

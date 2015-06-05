@@ -45,6 +45,7 @@ This is the default configuration in yml:
 
         # Default configuration
         debug: false # true if you want use the debug of all requests
+        log: false # true if you want to log the Pusher calls
         host: http://api.pusherapp.com
         port: 80
         timeout: 30

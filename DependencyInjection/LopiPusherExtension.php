@@ -5,6 +5,7 @@ namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -35,6 +36,10 @@ class LopiPusherExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        if (true === $config['log']) {
+            $container->getDefinition('lopi_pusher.pusher')->addMethodCall('set_logger', array(new Reference('lopi_pusher.logger')));
+        }
     }
 
     /**
