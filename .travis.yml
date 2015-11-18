@@ -23,7 +23,9 @@ env:
 
 before_script: 
     - composer self-update
-    - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
+    - composer require symfony/config:${SYMFONY_VERSION} --no-update
+    - composer require symfony/dependency-injection:${SYMFONY_VERSION} --no-update
+    - composer require symfony/http-kernel:${SYMFONY_VERSION} --no-update
     - composer update --prefer-source
 
 script: phpunit
