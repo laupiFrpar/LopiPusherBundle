@@ -8,104 +8,162 @@
 
 This bundle let you use Pusher simply.
 
-[Pusher](http://pusher.com/) ([Documentation](http://pusher.com/docs)) is a simple hosted API for adding realtime bi-directional functionality via WebSockets to web and mobile apps, or any other Internet connected device.
+[Pusher](http://pusher.com/) ([Documentation](http://pusher.com/docs)) is a simple
+hosted API for adding realtime bi-directional functionality via WebSockets to web
+and mobile apps, or any other Internet connected device. It's super powerful, and
+a ton of fun!
 
 This bundle is under the MIT license.
 
 ## Installation
 
-Use the [composer](http://getcomposer.org) to install this bundle.
+Use [composer](http://getcomposer.org) to install this bundle.
 
-    $ composer require laupifrpar/pusher-bundle
+```bash
+composer require laupifrpar/pusher-bundle
+```
 
-Then update your `AppKernel.php` file, and register the new bundle:
+Then update your `AppKernel.php` file to register the new bundle:
 
-    <?php
+```php
+// in app/AppKernel::registerBundles()
 
-    // in AppKernel::registerBundles()
-    $bundles = array(
-        // ...
-        new Lopi\Bundle\PusherBundle\LopiPusherBundle(),
-        // ...
-    );
+$bundles = array(
+    // ...
+    new Lopi\Bundle\PusherBundle\LopiPusherBundle(),
+    // ...
+);
+```
 
 ## Configuration
 
-If you have not a Pusher account, thank you to [sign up](https://app.pusherapp.com/accounts/sign_up) and make a note of your API key before continuing
+If you do *not* have a Pusher account, [sign up](https://app.pusherapp.com/accounts/sign_up)
+and make a note of your API key before continuing.
 
 ### General
 
+To start, you'll need to setup a bit of configuration:
+
 This is the default configuration in yml:
 
-    # app/config/config.yml
-    lopi_pusher:
-        app_id: <your_app_id>
-        key: <your_key>
-        secret: <your_secret>
+```yml
+# app/config/config.yml
+lopi_pusher:
+    app_id: <your_app_id>
+    key: <your_key>
+    secret: <your_secret>
 
-        # Default configuration
-        debug: false # true if you want use the debug of all requests
-        host: http://api.pusherapp.com
-        port: 80
-        timeout: 30
+    # Default configuration
+    debug: false # true if you want use the debug of all requests
+    host: http://api.pusherapp.com
+    port: 80
+    timeout: 30
 
-        # Optional configuration
-        auth_service_id: <the_auth_service_id> # optional if you want to use private or presence channels
+    # optional if you want to use private or presence channels
+    # see the section about "Private and Presense channel auth" below
+    auth_service_id: <the_auth_service_id>
+```
 
-By default, calls will be made over a non-encrypted connection. To change this to make calls over HTTPS:
+By default, calls will be made over a non-encrypted connection. To change this to
+make calls over HTTPS, simply:
 
-    # app/config/config.yml
-    lopi_pusher:
-        host: https://api.pusherapp.com
-        port: 443
+```yml
+# app/config/config.yml
+lopi_pusher:
+    # ...
 
-### Private and Presence channel authentication (optional)
+    host: https://api.pusherapp.com
+    port: 443
+```
+
+## Usage!
+
+Once you've configured the bundle, you will have access to a `lopi_pusher.pusher`
+service. From inside a controller, you can use it like this:
+
+```php
+public function triggerPusherAction()
+{
+    /** @var \Pusher $pusher */
+    $pusher = $this->container->get('lopi_pusher.pusher');
+
+    $data['message'] = 'hello world';
+    $pusher->trigger('test_channel', 'my_event', $data);
+
+    // ...
+}
+```
+
+The `lopi_pusher.pusher` returns an instance of the `\Pusher` class from the official
+Pusher SDK. You can find out all about it on 
+[pusher's documentation](https://github.com/pusher/pusher-php-server#publishingtriggering-events).
+
+## Private and Presence channel authentication (optional)
 
 If you'd like to use private or presence, you need to add an authorization service.
 
-First, create an authorization service that implements `Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface`
+First, create an authorization service that implements `Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface`:
 
-    <?php
-    // My/Bundle/AcmeBundle/Pusher/ChannelAuthenticator
+```php
+<?php
+// src/AppBundle/Pusher/ChannelAuthenticator.php
 
-    namespace My\Bundle\AcmeBundle\Pusher
+namespace AppBundle\Pusher
 
-    use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
+use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
 
-    class ChannelAuthenticator implements ChannelAuthenticatorInterface
+class ChannelAuthenticator implements ChannelAuthenticatorInterface
+{
+    public function authenticate($socketId, $channelName)
     {
-        public function authenticate($socketId, $channelName)
-        {
-            // logic here
+        // logic here
 
-            return true;
-        }
+        return true;
     }
+}
+```
 
-Then include it's **service id** in the lopi_pusher `auth_service_id` configuration parameter.
+Next, register it as service like normal:
 
-Additionally, enable the route by adding the following to your `app\config\routing.yml` configuration:
+```yml
+# app/config/services.yml
+services:
+    my_channel_authenticator:
+        class: AppBundle\Pusher\ChannelAuthenticator
+        arguments: []
+```
 
-    # app\config\routing.yml
-    lopi_pusher:
-        resource: "@LopiPusherBundle/Resources/config/routing.xml"
-        prefix:   /pusher
+Then include its **service id** in the lopi_pusher `auth_service_id` configuration
+parameter:
 
-In some symfony configurations, you may need to manually specify the channel_auth_endpoint: (not required in most setups)
+```yml
+# app/config/config.yml
+lopi_pusher:
+    # ...
 
-    <script type="text/javascript">
-        Pusher.channel_auth_endpoint = "{{ path('lopi_pusher_bundle_auth') }}";
-    </script>
+    auth_service_id: my_channel_authenticator
+```
 
+Additionally, enable the route by adding the following to your `app\config\routing.yml`
+configuration:
 
-## Use LopiPusherBundle
+```yml
+# app\config\routing.yml
+lopi_pusher:
+    resource: "@LopiPusherBundle/Resources/config/routing.xml"
+    prefix:   /pusher
+```
 
-Get the pusher service
+In some Symfony configurations, you may need to manually specify the
+`channel_auth_endpoint`: (not required in most setups):
 
-    <?php
-    $pusher = $this->container->get('lopi_pusher.pusher');
+```twig
+{# app/Resources/views/base.html.twig #}
 
-See the [pusher's documentation](https://github.com/pusher/pusher-php-server#publishingtriggering-events) to use the pusher service
+<script type="text/javascript">
+    Pusher.channel_auth_endpoint = "{{ path('lopi_pusher_bundle_auth') }}";
+</script>
+```
 
 ## Reporting an issue or a feature request
 
