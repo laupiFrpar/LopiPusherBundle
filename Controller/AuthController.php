@@ -3,7 +3,7 @@
 namespace Lopi\Bundle\PusherBundle\Controller;
 
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>
  * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
  */
-class AuthController extends ContainerAware
+class AuthController extends Controller
 {
 
     /**
