@@ -28,8 +28,8 @@
         "symfony/http-kernel": "~2.3"
     },
     "autoload": {
-        "psr-0": { "Lopi\\Bundle\\PusherBundle": "" }
-    },
-    "target-dir": "Lopi/Bundle/PusherBundle",
-    "minimum-stability": "stable"
+        "psr-4": {
+            "Lopi\\Bundle\\PusherBundle\\": ""
+        }
+    }
 }
