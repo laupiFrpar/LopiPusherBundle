@@ -3,7 +3,6 @@
 namespace Lopi\Bundle\PusherBundle\Tests\DependencyInjection;
 
 use Lopi\Bundle\PusherBundle\DependencyInjection\LopiPusherExtension;
-use Pusher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -32,7 +31,8 @@ class PusherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('app_id', $container->getParameter('lopi_pusher.app.id'));
         $this->assertEquals('key', $container->getParameter('lopi_pusher.key'));
         $this->assertEquals('secret', $container->getParameter('lopi_pusher.secret'));
-        $this->assertFalse($container->getParameter('lopi_pusher.debug'));
+        $this->assertEquals('us-east-1', $container->getParameter('lopi_pusher.options')['cluster']);
+        $this->assertFalse($container->getParameter('lopi_pusher.options')['debug']);
         $this->assertEquals('http://api.pusherapp.com', $container->getParameter('lopi_pusher.host'));
         $this->assertEquals('80', $container->getParameter('lopi_pusher.port'));
         $this->assertEquals('30', $container->getParameter('lopi_pusher.timeout'));
@@ -49,6 +49,7 @@ class PusherTest extends \PHPUnit_Framework_TestCase
             'app_id' => 'app_id',
             'key' => 'key',
             'secret' => 'secret',
+            'cluster' => 'cluster',
             'debug' => true,
             'host' => 'https://api.pusherapp.com',
             'port' => '443',
@@ -62,7 +63,8 @@ class PusherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('app_id', $container->getParameter('lopi_pusher.app.id'));
         $this->assertEquals('key', $container->getParameter('lopi_pusher.key'));
         $this->assertEquals('secret', $container->getParameter('lopi_pusher.secret'));
-        $this->assertTrue($container->getParameter('lopi_pusher.debug'));
+        $this->assertEquals('cluster', $container->getParameter('lopi_pusher.options')['cluster']);
+        $this->assertTrue($container->getParameter('lopi_pusher.options')['debug']);
         $this->assertEquals('https://api.pusherapp.com', $container->getParameter('lopi_pusher.host'));
         $this->assertEquals('443', $container->getParameter('lopi_pusher.port'));
         $this->assertEquals('60', $container->getParameter('lopi_pusher.timeout'));

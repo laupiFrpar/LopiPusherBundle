@@ -21,10 +21,15 @@ class LopiPusherExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $options=array(
+            'cluster'=>$config['cluster'],
+            'debug'=>$config['debug']
+        );
+
         $container->setParameter('lopi_pusher.app.id', $config['app_id']);
         $container->setParameter('lopi_pusher.key', $config['key']);
         $container->setParameter('lopi_pusher.secret', $config['secret']);
-        $container->setParameter('lopi_pusher.debug', $config['debug']);
+        $container->setParameter('lopi_pusher.options', $options);
         $container->setParameter('lopi_pusher.host', $config['host']);
         $container->setParameter('lopi_pusher.port', $config['port']);
         $container->setParameter('lopi_pusher.timeout', $config['timeout']);
