@@ -10,7 +10,7 @@
             <argument>%lopi_pusher.key%</argument>
             <argument>%lopi_pusher.secret%</argument>
             <argument>%lopi_pusher.app.id%</argument>
-            <argument>%lopi_pusher.debug%</argument>
+            <argument>%lopi_pusher.options%</argument>
             <argument>%lopi_pusher.host%</argument>
             <argument>%lopi_pusher.port%</argument>
             <argument>%lopi_pusher.timeout%</argument>

@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('app_id')->isRequired()->end()
                 ->scalarNode('key')->isRequired()->end()
                 ->scalarNode('secret')->isRequired()->end()
+                ->scalarNode('cluster')->defaultValue('us-east-1')->end()
                 ->booleanNode('debug')->defaultValue(false)->end()
                 ->scalarNode('host')->defaultValue('http://api.pusherapp.com')->end()
                 ->scalarNode('port')->defaultValue('80')->end()

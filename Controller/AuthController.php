@@ -22,8 +22,9 @@ class AuthController extends Controller
      * and       http://pusher.com/docs/auth_signatures
      *
      * @param Request $request
-     *
      * @return Response
+     * @throws AccessDeniedException
+     * @throws \Exception
      */
     public function authAction(Request $request)
     {
