@@ -19,13 +19,13 @@
         "source": "https://github.com/laupiFrpar/LopiPusherBundle"
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.5",
         "pusher/pusher-php-server": ">=2.2.1"
     },
     "require-dev": {
-        "symfony/config": "~2.3",
-        "symfony/dependency-injection": "~2.3",
-        "symfony/http-kernel": "~2.3"
+        "symfony/config": "~2.7",
+        "symfony/dependency-injection": "~2.7",
+        "symfony/http-kernel": "~2.7"
     },
     "autoload": {
         "psr-4": {

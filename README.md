@@ -55,6 +55,7 @@ lopi_pusher:
 
     # Default configuration
     debug: false # true if you want use the debug of all requests
+    cluster: us-east-1 # Change the cluster name
     host: http://api.pusherapp.com
     port: 80
     timeout: 30
@@ -95,7 +96,7 @@ public function triggerPusherAction()
 ```
 
 The `lopi_pusher.pusher` returns an instance of the `\Pusher` class from the official
-Pusher SDK. You can find out all about it on 
+Pusher SDK. You can find out all about it on
 [pusher's documentation](https://github.com/pusher/pusher-php-server#publishingtriggering-events).
 
 ## Private and Presence channel authentication (optional)
