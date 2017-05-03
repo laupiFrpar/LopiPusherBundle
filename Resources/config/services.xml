@@ -7,10 +7,8 @@
     <services>
 
         <service id="lopi_pusher.pusher" class="Pusher">
-            <argument>%lopi_pusher.key%</argument>
-            <argument>%lopi_pusher.secret%</argument>
-            <argument>%lopi_pusher.app.id%</argument>
-            <argument>%lopi_pusher.options%</argument>
+            <factory class="Lopi\Bundle\PusherBundle\DependencyInjection\PusherFactory" method="create" />
+            <argument>%lopi_pusher.config%</argument>
         </service>
 
     </services>
