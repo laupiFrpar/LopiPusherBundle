@@ -21,18 +21,33 @@ class LopiPusherExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $options=array(
-            'cluster'=>$config['cluster'],
-            'debug'=>$config['debug']
-        );
+        if (!empty($config['url'])) {
+            $config['app_id'] = substr(parse_url($config['url'], PHP_URL_PATH), 6);
+            $config['key'] = parse_url($config['url'], PHP_URL_USER);
+            $config['secret'] = parse_url($config['url'], PHP_URL_PASS);
+            $config['scheme'] = parse_url($config['url'], PHP_URL_SCHEME);
+            $config['host'] = parse_url($config['url'], PHP_URL_HOST);
+            $config['port'] = parse_url($config['url'], PHP_URL_PORT) ?? $config['port'];
+        }
+
+        // For backwards compatibility with deprecated host argument
+        if (preg_match('(^(https?://))', $config['host'], $matches)) {
+            $config['scheme'] = substr($matches[0], 0, -3);
+            $config['host'] = substr($config['host'], strlen($matches[0]));
+        }
+
+        $options = [
+            'host' => $config['host'],
+            'port' => $config['port'],
+            'timeout' => $config['timeout'],
+            'cluster' => $config['cluster'],
+            'debug' => $config['debug'],
+        ];
 
         $container->setParameter('lopi_pusher.app.id', $config['app_id']);
         $container->setParameter('lopi_pusher.key', $config['key']);
         $container->setParameter('lopi_pusher.secret', $config['secret']);
         $container->setParameter('lopi_pusher.options', $options);
-        $container->setParameter('lopi_pusher.host', $config['host']);
-        $container->setParameter('lopi_pusher.port', $config['port']);
-        $container->setParameter('lopi_pusher.timeout', $config['timeout']);
 
         if (null !== $config['auth_service_id']) {
             $container->setAlias('lopi_pusher.authenticator', $config['auth_service_id']);
