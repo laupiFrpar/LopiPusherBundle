@@ -25,7 +25,8 @@
     "require-dev": {
         "symfony/config": "~2.7",
         "symfony/dependency-injection": "~2.7",
-        "symfony/http-kernel": "~2.7"
+        "symfony/http-kernel": "~2.7",
+        "phpunit/phpunit": "4.*"
     },
     "autoload": {
         "psr-4": {
