@@ -14,7 +14,7 @@ class PusherFactory
             $config['secret'] = parse_url($config['url'], PHP_URL_PASS);
             $config['scheme'] = parse_url($config['url'], PHP_URL_SCHEME);
             $config['host'] = parse_url($config['url'], PHP_URL_HOST);
-            $config['port'] = parse_url($config['url'], PHP_URL_PORT) ?? $config['port'];
+            $config['port'] = parse_url($config['url'], PHP_URL_PORT) ?: $config['port'];
         }
 
         // For backwards compatibility with deprecated host argument
