@@ -11,5 +11,10 @@
             <argument>%lopi_pusher.config%</argument>
         </service>
 
+        <service id="lopi_pusher.twig_extension" class="Lopi\Bundle\PusherBundle\Twig\PusherExtension" public="false">
+            <argument type="service" id="lopi_pusher.pusher"></argument>
+            <tag name="twig.extension" />
+        </service>
+
     </services>
 </container>
