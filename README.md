@@ -42,27 +42,40 @@ and make a note of your API key before continuing.
 
 ### General
 
-To start, you'll need to setup a bit of configuration:
+To start, you'll need to setup a bit of configuration. 
 
 This is the default configuration in yml:
 
 ```yml
 # app/config/config.yml
 lopi_pusher:
-    app_id: <your_app_id>
-    key: <your_key>
-    secret: <your_secret>
-
     # Default configuration
-    debug: false # true if you want use the debug of all requests
-    cluster: us-east-1 # Change the cluster name
-    host: http://api.pusherapp.com
+    scheme: http
+    host: api.pusherapp.com
     port: 80
+    cluster: us-east-1 # Change the cluster name
     timeout: 30
+    debug: false # true if you want use the debug of all requests
+```
 
-    # optional if you want to use private or presence channels
-    # see the section about "Private and Presense channel auth" below
-    auth_service_id: <the_auth_service_id>
+You must set the `url` parameter :
+
+```yml
+# app/config/config.yml
+lopi_pusher:
+    url: <scheme>://<key>:<secret>@<host>[:<port>]/apps/<app-id>
+```
+
+It will parse the URL and set, or replace the default value if exists, the various parameters `scheme`, `key`, `secret`, `host`, `port` and `app_id`
+
+Or you can set the various parameters separately :
+
+```yml
+# app/config/config.yml
+lopi_pusher:
+	app_id: <app-id>
+	key: <key>
+	secret: <secret>
 ```
 
 By default, calls will be made over a non-encrypted connection. To change this to
@@ -72,10 +85,19 @@ make calls over HTTPS, simply:
 # app/config/config.yml
 lopi_pusher:
     # ...
-
-    host: https://api.pusherapp.com
+	scheme: https
     port: 443
 ```
+
+If you want to use private or presence channels, set the parameter `auth_service_id`
+
+```yml
+# app/config/config.yml
+lopi_pusher:
+    auth_service_id: <the_auth_service_id>
+```
+
+See the section about "Private and Presense channel auth" below
 
 ## Usage!
 
