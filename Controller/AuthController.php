@@ -47,7 +47,7 @@ class AuthController extends Controller
             $data .= ':' . $responseData['channel_data'];
         }
 
-        $responseData['auth'] = $this->container->getParameter('lopi_pusher.key') . ':' . $this->getCode($data);
+        $responseData['auth'] = $this->container->getParameter('lopi_pusher.config')['key'] . ':' . $this->getCode($data);
 
         return new Response(json_encode($responseData), 200, array('Content-Type' => 'application/json'));
     }
@@ -61,6 +61,6 @@ class AuthController extends Controller
      */
     private function getCode($data)
     {
-        return hash_hmac('sha256', $data, $this->container->getParameter('lopi_pusher.secret'));
+        return hash_hmac('sha256', $data, $this->container->getParameter('lopi_pusher.config')['secret']);
     }
 }
