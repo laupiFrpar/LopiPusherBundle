@@ -6,7 +6,7 @@
 
     <services>
 
-        <service id="lopi_pusher.pusher" class="Pusher">
+        <service id="lopi_pusher.pusher" class="Pusher\Pusher">
             <factory class="Lopi\Bundle\PusherBundle\DependencyInjection\PusherFactory" method="create" />
             <argument>%lopi_pusher.config%</argument>
         </service>
