@@ -3,6 +3,7 @@
 namespace Lopi\Bundle\PusherBundle\Tests\DependencyInjection;
 
 use Lopi\Bundle\PusherBundle\DependencyInjection\LopiPusherExtension;
+use Pusher\Pusher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -29,7 +30,7 @@ class PusherTest extends \PHPUnit_Framework_TestCase
         $extension = new LopiPusherExtension();
         $extension->load($configs, $container);
 
-        $this->assertInstanceOf('Pusher', $container->get('lopi_pusher.pusher'));
+        $this->assertInstanceOf(Pusher::class, $container->get('lopi_pusher.pusher'));
         $this->assertEquals('app_id', $container->getParameter('lopi_pusher.config')['app_id']);
         $this->assertEquals('key', $container->getParameter('lopi_pusher.config')['key']);
         $this->assertEquals('secret', $container->getParameter('lopi_pusher.config')['secret']);
@@ -64,7 +65,7 @@ class PusherTest extends \PHPUnit_Framework_TestCase
         $pusher = $container->get('lopi_pusher.pusher');
         $pusherSettings = $pusher->getSettings();
 
-        $this->assertInstanceOf('Pusher', $pusher);
+        $this->assertInstanceOf(Pusher::class, $pusher);
         $this->assertEquals('app_id', $pusherSettings['app_id']);
         $this->assertEquals('key', $pusherSettings['auth_key']);
         $this->assertEquals('secret', $pusherSettings['secret']);
