@@ -6,9 +6,14 @@
 
     <services>
 
-        <service id="lopi_pusher.pusher" class="Pusher">
+        <service id="lopi_pusher.pusher" class="Pusher\Pusher">
             <factory class="Lopi\Bundle\PusherBundle\DependencyInjection\PusherFactory" method="create" />
             <argument>%lopi_pusher.config%</argument>
+        </service>
+
+        <service id="lopi_pusher.twig_extension" class="Lopi\Bundle\PusherBundle\Twig\PusherExtension" public="false">
+            <argument type="service" id="lopi_pusher.pusher"></argument>
+            <tag name="twig.extension" />
         </service>
 
     </services>
