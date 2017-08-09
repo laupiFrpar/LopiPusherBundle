@@ -2,7 +2,7 @@
 
 namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 
-use Pusher;
+use Pusher\Pusher;
 
 class PusherFactory
 {
