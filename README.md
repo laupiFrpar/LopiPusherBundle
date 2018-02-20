@@ -2,6 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/laupiFrpar/LopiPusherBundle.png)](http://travis-ci.org/laupiFrpar/LopiPusherBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/fc5c7590-2d84-47b0-b1e9-82b72c69767a/mini.png)](https://insight.sensiolabs.com/projects/fc5c7590-2d84-47b0-b1e9-82b72c69767a)
+[![Maintainability](https://api.codeclimate.com/v1/badges/76235ea329f7ea57834b/maintainability)](https://codeclimate.com/github/laupiFrpar/LopiPusherBundle/maintainability)
 
 This bundle let you use Pusher simply.
 
