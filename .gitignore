@@ -19,3 +19,4 @@ CVS
 vendor
 
 composer.lock
+*.sublime-workspace
