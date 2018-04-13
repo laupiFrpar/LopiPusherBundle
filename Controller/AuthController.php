@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Lopi\Bundle\PusherBundle\Controller;
 
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
@@ -22,7 +27,9 @@ class AuthController extends Controller
      * and       http://pusher.com/docs/auth_signatures
      *
      * @param Request $request
+     *
      * @return Response
+     *
      * @throws AccessDeniedException
      * @throws \Exception
      */
@@ -36,18 +43,21 @@ class AuthController extends Controller
         $authenticator = $this->container->get('lopi_pusher.authenticator');
         $socketId = $request->get('socket_id');
         $channelName = $request->get('channel_name');
-        $data = $socketId . ':' . $channelName;
+        $data = $socketId.':'.$channelName;
 
         if (!$authenticator->authenticate($socketId, $channelName)) {
             throw new AccessDeniedException('Request authentication denied');
         }
 
         if (strpos($channelName, 'presence') === 0 && $authenticator instanceof ChannelAuthenticatorPresenceInterface) {
-            $responseData['channel_data'] = json_encode(array('user_id' => $authenticator->getUserId(), 'user_info' => $authenticator->getUserInfo()));
-            $data .= ':' . $responseData['channel_data'];
+            $responseData['channel_data'] = json_encode([
+                'user_id' => $authenticator->getUserId(),
+                'user_info' => $authenticator->getUserInfo(),
+            ]);
+            $data .= ':'.$responseData['channel_data'];
         }
 
-        $responseData['auth'] = $this->container->getParameter('lopi_pusher.config')['key'] . ':' . $this->getCode($data);
+        $responseData['auth'] = $this->container->getParameter('lopi_pusher.config')['key'].':'.$this->getCode($data);
 
         return new Response(json_encode($responseData), 200, array('Content-Type' => 'application/json'));
     }

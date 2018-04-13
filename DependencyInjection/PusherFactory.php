@@ -1,11 +1,24 @@
 <?php
 
+/*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 
 use Pusher\Pusher;
 
+/**
+ * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
+ */
 class PusherFactory
 {
+    /**
+     * @param array $config
+     *
+     * @return Pusher
+     */
     public static function create(array $config)
     {
         if (!empty($config['url'])) {

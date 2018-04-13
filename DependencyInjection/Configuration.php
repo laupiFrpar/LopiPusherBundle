@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -26,7 +31,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->validate()
                 ->ifTrue(
-                    function($data) {
+                    function ($data) {
                         return empty($data['url'])
                             && (
                                 empty($data['app_id'])
