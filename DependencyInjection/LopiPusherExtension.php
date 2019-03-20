@@ -29,7 +29,7 @@ class LopiPusherExtension extends Extension
         $container->setParameter('lopi_pusher.config', $config);
 
         if (null !== $config['auth_service_id']) {
-            $container->setAlias('lopi_pusher.authenticator', $config['auth_service_id']);
+            $container->setAlias('lopi_pusher.authenticator', $config['auth_service_id'])->setPublic(true);
         }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
