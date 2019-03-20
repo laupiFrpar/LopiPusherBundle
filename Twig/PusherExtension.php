@@ -8,11 +8,13 @@
 namespace Lopi\Bundle\PusherBundle\Twig;
 
 use Pusher\Pusher;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 
 /**
  * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
  */
-class PusherExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+class PusherExtension extends AbstractExtension implements GlobalsInterface
 {
     private $pusher;
 

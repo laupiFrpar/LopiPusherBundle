@@ -8,6 +8,7 @@
 namespace Lopi\Bundle\PusherBundle\Tests\DependencyInjection;
 
 use Lopi\Bundle\PusherBundle\DependencyInjection\LopiPusherExtension;
+use PHPUnit\Framework\TestCase;
 use Pusher\Pusher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -16,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
  */
-class PusherTest extends \PHPUnit_Framework_TestCase
+class PusherTest extends TestCase
 {
     /**
      * Test the load of the configuration
