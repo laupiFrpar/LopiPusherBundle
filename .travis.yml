@@ -1,36 +1,24 @@
 language: php
 
 php:
-    - 5.6
-    - 7.0
     - 7.1
+    - 7.2
+    - 7.3
     - hhvm
 
 matrix:
     allow_failures:
         - php: hhvm
     include:
-        - php: 5.6
-          env: SYMFONY_VERSION=2.8.*
-        - php: 5.6
-          env: SYMFONY_VERSION=3.1.*
-        - php: 5.6
-          env: SYMFONY_VERSION=3.2.*
-        - php: 7.0
-          env: SYMFONY_VERSION=2.8.*
-        - php: 7.0
-          env: SYMFONY_VERSION=3.1.*
-        - php: 7.0
-          env: SYMFONY_VERSION=3.2.*
         - php: 7.1
-          env: SYMFONY_VERSION=2.8.*
-        - php: 7.1
-          env: SYMFONY_VERSION=3.1.*
-        - php: 7.1
-          env: SYMFONY_VERSION=3.2.*
+          env: SYMFONY_VERSION=3.4.*
+        - php: 7.2
+          env: SYMFONY_VERSION=3.4.*
+        - php: 7.3
+          env: SYMFONY_VERSION=3.4.*
 
 env:
-    - SYMFONY_VERSION=2.7.*
+    - SYMFONY_VERSION=3.4.*
 
 before_script:
     - composer self-update
