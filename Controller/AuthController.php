@@ -39,14 +39,51 @@ class AuthController extends Controller
             throw new \Exception('The authenticator service does not exsit.');
         }
 
-        $responseData = array();
         $authenticator = $this->container->get('lopi_pusher.authenticator');
         $socketId = $request->get('socket_id');
-        $channelName = $request->get('channel_name');
+
+        $channelNames = $request->get('channel_name');
+        if (is_array($channelNames)) {
+            $combineResponse = array();
+            foreach ($channelNames as $channelName) {
+                $responseData = $this->authenticateChannel($socketId, $channelName, $authenticator);
+            
+                if (!$responseData) {
+                    $combineResponse[$channelName]['status'] = 403;
+
+                    continue;
+                }
+
+                $combineResponse[$channelName]['status'] = 200;
+                $combineResponse[$channelName]['data'] = $responseData;
+            }
+
+            return new Response(json_encode($combineResponse), 200, array('Content-Type' => 'application/json'));
+        }
+
+        $responseData = $this->authenticateChannel($socketId, $channelNames, $authenticator);
+        if (!$responseData) {
+            throw new AccessDeniedException('Request authentication denied');
+        }
+
+        return new Response(json_encode($responseData), 200, array('Content-Type' => 'application/json'));
+    }
+
+    /**
+     * Perform channel autentication.
+     * 
+     * @param string $socketId The socket id
+     * @param string $channelName Name of the channel to validate. 
+     *
+     * @return array Response auth data or null on access denied.
+     */
+    private function authenticateChannel($socketId, $channelName, $authenticator): ?array
+    {
+        $responseData = array();
         $data = $socketId.':'.$channelName;
 
         if (!$authenticator->authenticate($socketId, $channelName)) {
-            throw new AccessDeniedException('Request authentication denied');
+            return null;
         }
 
         if (strpos($channelName, 'presence') === 0 && $authenticator instanceof ChannelAuthenticatorPresenceInterface) {
@@ -59,7 +96,7 @@ class AuthController extends Controller
 
         $responseData['auth'] = $this->container->getParameter('lopi_pusher.config')['key'].':'.$this->getCode($data);
 
-        return new Response(json_encode($responseData), 200, array('Content-Type' => 'application/json'));
+        return $responseData;
     }
 
     /**
