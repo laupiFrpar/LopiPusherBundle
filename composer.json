@@ -19,7 +19,7 @@
         "source": "https://github.com/laupiFrpar/LopiPusherBundle"
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "pusher/pusher-php-server": "^4.0",
         "twig/twig": "~2.7"
     },
