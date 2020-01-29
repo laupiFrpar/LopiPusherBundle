@@ -21,7 +21,7 @@
     "require": {
         "php": ">=7.2",
         "pusher/pusher-php-server": "^4.0",
-        "twig/twig": "~2.7"
+        "twig/twig": "~2.7|~3.0"
     },
     "require-dev": {
         "symfony/config": "~3.4",
