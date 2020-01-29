@@ -25,8 +25,13 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('lopi_pusher', 'array');
+        $treeBuilder = new TreeBuilder('lopi_pusher', 'array');
+
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $rootNode = $treeBuilder->root('lopi_pusher', 'array');
+        }
 
         $rootNode
             ->validate()
