@@ -20,18 +20,21 @@
     },
     "require": {
         "php": ">=7.2",
-        "pusher/pusher-php-server": "^4.0",
-        "twig/twig": "~2.7|~3.0"
+        "pusher/pusher-php-server": "^4.0"
     },
     "require-dev": {
         "symfony/config": "~3.4",
         "symfony/dependency-injection": "~3.4",
         "symfony/http-kernel": "~3.4",
+        "twig/twig": "~2.7|~3.0",
         "phpunit/phpunit": "7.*"
     },
     "autoload": {
         "psr-4": {
             "Lopi\\Bundle\\PusherBundle\\": ""
         }
+    },
+    "conflict": {
+        "twig/twig": "<2.7"
     }
 }
