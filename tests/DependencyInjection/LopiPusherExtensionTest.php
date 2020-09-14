@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
  */
-class PusherTest extends TestCase
+class LopiPusherExtensionTest extends TestCase
 {
     /**
      * Test the load of the configuration

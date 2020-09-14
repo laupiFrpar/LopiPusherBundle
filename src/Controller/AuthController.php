@@ -8,10 +8,9 @@
 namespace Lopi\Bundle\PusherBundle\Controller;
 
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * AuthController
@@ -19,7 +18,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>
  * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
  */
-class AuthController extends Controller
+class AuthController extends AbstractController
 {
 
     /**
@@ -29,17 +28,14 @@ class AuthController extends Controller
      * @param Request $request
      *
      * @return Response
-     *
-     * @throws AccessDeniedException
-     * @throws \Exception
      */
     public function authAction(Request $request)
     {
-        if (!$this->container->has('lopi_pusher.authenticator')) {
+        if (!$this->has('lopi_pusher.authenticator')) {
             throw new \Exception('The authenticator service does not exsit.');
         }
 
-        $authenticator = $this->container->get('lopi_pusher.authenticator');
+        $authenticator = $this->get('lopi_pusher.authenticator');
         $socketId = $request->get('socket_id');
 
         $channelNames = $request->get('channel_name');
@@ -47,7 +43,7 @@ class AuthController extends Controller
             $combineResponse = array();
             foreach ($channelNames as $channelName) {
                 $responseData = $this->authenticateChannel($socketId, $channelName, $authenticator);
-            
+
                 if (!$responseData) {
                     $combineResponse[$channelName]['status'] = 403;
 
@@ -58,22 +54,22 @@ class AuthController extends Controller
                 $combineResponse[$channelName]['data'] = $responseData;
             }
 
-            return new Response(json_encode($combineResponse), 200, array('Content-Type' => 'application/json'));
+            return $this->json($combineResponse);
         }
 
         $responseData = $this->authenticateChannel($socketId, $channelNames, $authenticator);
         if (!$responseData) {
-            throw new AccessDeniedException('Request authentication denied');
+            return $this->json('Request authentication denied', 403);
         }
 
-        return new Response(json_encode($responseData), 200, array('Content-Type' => 'application/json'));
+        return $this->json($responseData);
     }
 
     /**
      * Perform channel autentication.
-     * 
+     *
      * @param string $socketId The socket id
-     * @param string $channelName Name of the channel to validate. 
+     * @param string $channelName Name of the channel to validate.
      *
      * @return array Response auth data or null on access denied.
      */
@@ -94,7 +90,7 @@ class AuthController extends Controller
             $data .= ':'.$responseData['channel_data'];
         }
 
-        $responseData['auth'] = $this->container->getParameter('lopi_pusher.config')['key'].':'.$this->getCode($data);
+        $responseData['auth'] = $this->getParameter('lopi_pusher.config')['key'].':'.$this->getCode($data);
 
         return $responseData;
     }
@@ -108,6 +104,6 @@ class AuthController extends Controller
      */
     private function getCode($data)
     {
-        return hash_hmac('sha256', $data, $this->container->getParameter('lopi_pusher.config')['secret']);
+        return hash_hmac('sha256', $data, $this->getParameter('lopi_pusher.config')['secret']);
     }
 }

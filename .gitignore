@@ -20,3 +20,5 @@ vendor
 
 composer.lock
 *.sublime-workspace
+.phpunit.result.cache
+phpunit.xml
