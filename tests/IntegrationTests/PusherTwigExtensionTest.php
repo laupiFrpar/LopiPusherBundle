@@ -20,6 +20,10 @@ final class PusherTwigExtensionTest extends TestCase
         $twig = $container->get('twig');
 
         $this->assertInstanceOf(PusherExtension::class, $twig->getExtension(PusherExtension::class));
-        $this->assertStringContainsString('test_key', $twig->render('sample.html.twig'));
+        if (method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString('test_key', $twig->render('sample.html.twig'));
+        } else {
+            $this->assertContains('test_key', $twig->render('sample.html.twig'));
+        }
     }
 }
