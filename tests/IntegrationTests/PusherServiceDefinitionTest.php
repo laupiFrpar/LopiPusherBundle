@@ -20,6 +20,7 @@ final class PusherServiceDefinitionTest extends TestCase
 
     /**
      * @dataProvider bundleServiceDefinitionDataProvider
+     * @doesNotPerformAssertions
      */
     public function testBundleServiceDefinitions(string $definition): void
     {
@@ -35,7 +36,9 @@ final class PusherServiceDefinitionTest extends TestCase
         $container->get($definition);
 
         // If a service is not correctly defined, i.e. wrong class namespace, an exception will be thrown.
-        $this->expectNotToPerformAssertions();
+        if (method_exists($this, 'expectNotToPerformAssertions')) {
+            $this->expectNotToPerformAssertions();
+        }
     }
 }
 

@@ -9,6 +9,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class PusherAutowireTest extends TestCase
 {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testPusherIsAutowiredByContainer()
     {
         $builder = new ContainerBuilder();
@@ -22,7 +25,9 @@ final class PusherAutowireTest extends TestCase
         $container = $kernel->getContainer();
         $container->get(PusherAutowireClass::class);
 
-        $this->expectNotToPerformAssertions();
+        if (method_exists($this, 'expectNotToPerformAssertions')) {
+            $this->expectNotToPerformAssertions();
+        }
     }
 }
 
