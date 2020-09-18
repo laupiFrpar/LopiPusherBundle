@@ -12,7 +12,7 @@ namespace Lopi\Bundle\PusherBundle\Authenticator;
  *
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>
  */
-interface ChannelAuthenticatorPresenceInterface
+interface ChannelAuthenticatorPresenceInterface extends ChannelAuthenticatorInterface
 {
     /**
      * Returns an optional array of user info

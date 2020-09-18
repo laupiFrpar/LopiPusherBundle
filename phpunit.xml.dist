@@ -15,7 +15,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="LopiPusherBundle Test Suite">
+        <testsuite name="all">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>

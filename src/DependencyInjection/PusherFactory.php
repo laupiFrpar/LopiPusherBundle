@@ -8,6 +8,7 @@
 namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 
 use Pusher\Pusher;
+use Pusher\PusherException;
 
 /**
  * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
@@ -18,6 +19,7 @@ class PusherFactory
      * @param array $config
      *
      * @return Pusher
+     * @throws PusherException
      */
     public static function create(array $config)
     {

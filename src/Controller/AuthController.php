@@ -7,8 +7,9 @@
 
 namespace Lopi\Bundle\PusherBundle\Controller;
 
+use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,31 +19,34 @@ use Symfony\Component\HttpFoundation\Request;
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>
  * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
  */
-class AuthController extends AbstractController
+class AuthController
 {
+    private $pusherConfig;
+    private $authenticator;
+
+    public function __construnct(array $pusherConfig, ?ChannelAuthenticatorInterface $authenticator)
+    {
+        $this->pusherConfig = $pusherConfig;
+        $this->authenticator = $authenticator;
+    }
 
     /**
      * Implement http://pusher.com/docs/authenticating_users
      * and       http://pusher.com/docs/auth_signatures
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
-    public function authAction(Request $request)
+    public function authAction(Request $request): Response
     {
-        if (!$this->has('lopi_pusher.authenticator')) {
+        if (!$this->authenticator) {
             throw new \Exception('The authenticator service does not exsit.');
         }
 
-        $authenticator = $this->get('lopi_pusher.authenticator');
         $socketId = $request->get('socket_id');
 
         $channelNames = $request->get('channel_name');
         if (is_array($channelNames)) {
             $combineResponse = array();
             foreach ($channelNames as $channelName) {
-                $responseData = $this->authenticateChannel($socketId, $channelName, $authenticator);
+                $responseData = $this->authenticateChannel($socketId, $channelName);
 
                 if (!$responseData) {
                     $combineResponse[$channelName]['status'] = 403;
@@ -54,15 +58,15 @@ class AuthController extends AbstractController
                 $combineResponse[$channelName]['data'] = $responseData;
             }
 
-            return $this->json($combineResponse);
+            return new JsonResponse($combineResponse);
         }
 
-        $responseData = $this->authenticateChannel($socketId, $channelNames, $authenticator);
+        $responseData = $this->authenticateChannel($socketId, $channelNames);
         if (!$responseData) {
-            return $this->json('Request authentication denied', 403);
+            return new JsonResponse('Request authentication denied', 403);
         }
 
-        return $this->json($responseData);
+        return new JsonResponse($responseData);
     }
 
     /**
@@ -73,24 +77,24 @@ class AuthController extends AbstractController
      *
      * @return array Response auth data or null on access denied.
      */
-    private function authenticateChannel($socketId, $channelName, $authenticator): ?array
+    private function authenticateChannel(string $socketId, string $channelName): ?array
     {
         $responseData = array();
         $data = $socketId.':'.$channelName;
 
-        if (!$authenticator->authenticate($socketId, $channelName)) {
+        if (!$this->authenticator->authenticate($socketId, $channelName)) {
             return null;
         }
 
-        if (strpos($channelName, 'presence') === 0 && $authenticator instanceof ChannelAuthenticatorPresenceInterface) {
-            $responseData['channel_data'] = json_encode([
-                'user_id' => $authenticator->getUserId(),
-                'user_info' => $authenticator->getUserInfo(),
+        if (strpos($channelName, 'presence') === 0 && $this->authenticator instanceof ChannelAuthenticatorPresenceInterface) {
+            $responseData['channel_data'] = \json_encode([
+                'user_id' => $this->authenticator->getUserId(),
+                'user_info' => $this->authenticator->getUserInfo(),
             ]);
             $data .= ':'.$responseData['channel_data'];
         }
 
-        $responseData['auth'] = $this->getParameter('lopi_pusher.config')['key'].':'.$this->getCode($data);
+        $responseData['auth'] = $this->pusherConfig['key'].':'.$this->getCode($data);
 
         return $responseData;
     }
@@ -99,11 +103,9 @@ class AuthController extends AbstractController
      * Get the hashed data
      *
      * @param string $data The data to hash
-     *
-     * @return string
      */
-    private function getCode($data)
+    private function getCode($data): string
     {
-        return hash_hmac('sha256', $data, $this->getParameter('lopi_pusher.config')['secret']);
+        return hash_hmac('sha256', $data, $this->pusherConfig['secret']);
     }
 }
