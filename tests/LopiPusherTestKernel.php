@@ -68,6 +68,8 @@ class LopiPusherTestKernel extends Kernel
                 $container->loadFromExtension(
                     'twig',
                     [
+                        'exception_controller' => null,
+                        'strict_variables' => null,
                         'default_path' => __DIR__.'/Fixtures/templates'
                     ]
                 );
