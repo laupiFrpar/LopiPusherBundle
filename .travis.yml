@@ -8,22 +8,20 @@ php:
 matrix:
     include:
         - php: 7.3
-          env: SYMFONY_VERSION=4.4.*
+          env: SYMFONY_REQUIRE=4.4.*
         - php: 7.4
-          env: SYMFONY_VERSION=5.1.*
+          env: SYMFONY_REQUIRE=5.1.*
 
 env:
-    - SYMFONY_VERSION=3.4.*
+    - SYMFONY_REQUIRE=3.4.*
 
-before_script:
+before_install:
+    - find ~/.phpenv -name xdebug.ini -delete
     - composer self-update
-    - composer require symfony/config:${SYMFONY_VERSION} --no-update
-    - composer require symfony/dependency-injection:${SYMFONY_VERSION} --no-update
-    - composer require symfony/http-kernel:${SYMFONY_VERSION} --no-update
-    - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
-    - composer require symfony/phpunit-bridge:${SYMFONY_VERSION} --no-update
-    - composer require symfony/twig-bundle:${SYMFONY_VERSION} --no-update
+    - composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
     - composer update --prefer-source
+
+install:
     - vendor/bin/simple-phpunit install
 
 script: vendor/bin/simple-phpunit
