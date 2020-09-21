@@ -24,7 +24,7 @@ class AuthController
     private $pusherConfig;
     private $authenticator;
 
-    public function __construnct(array $pusherConfig, ?ChannelAuthenticatorInterface $authenticator)
+    public function __construnct(array $pusherConfig, ChannelAuthenticatorInterface $authenticator)
     {
         $this->pusherConfig = $pusherConfig;
         $this->authenticator = $authenticator;
@@ -36,10 +36,6 @@ class AuthController
      */
     public function authAction(Request $request): Response
     {
-        if (!$this->authenticator) {
-            throw new \Exception('The authenticator service does not exsit.');
-        }
-
         $socketId = $request->get('socket_id');
 
         $channelNames = $request->get('channel_name');

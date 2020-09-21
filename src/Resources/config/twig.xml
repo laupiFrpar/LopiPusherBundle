@@ -6,7 +6,7 @@
 
     <services>
 
-        <service id="lopi_pusher.twig_extension" class="Lopi\Bundle\PusherBundle\Twig\PusherExtension" public="false">
+        <service id="lopi_pusher.twig_extension" class="Lopi\Bundle\PusherBundle\Twig\PusherExtension">
             <argument type="service" id="lopi_pusher.pusher"/>
             <tag name="twig.extension" />
         </service>

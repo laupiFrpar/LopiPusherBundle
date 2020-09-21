@@ -3,10 +3,14 @@
 namespace Lopi\Bundle\PusherBundle\Tests\IntegrationTests;
 
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
+use Lopi\Bundle\PusherBundle\Controller\AuthController;
 use Lopi\Bundle\PusherBundle\Tests\LopiPusherTestKernel;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
+use Pusher\Pusher;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 final class PusherServiceDefinitionTest extends TestCase
 {
@@ -14,31 +18,47 @@ final class PusherServiceDefinitionTest extends TestCase
     {
         $prefix = 'lopi_pusher.';
 
-        yield [$prefix.'pusher'];
-        yield [$prefix.'auth_controller'];
+        yield [$prefix.'pusher',  Pusher::class, false];
+        yield [$prefix.'auth_controller', AuthController::class, true];
     }
 
     /**
      * @dataProvider bundleServiceDefinitionDataProvider
-     * @doesNotPerformAssertions
      */
-    public function testBundleServiceDefinitions(string $definition): void
+    public function testBundleServiceDefinitions(string $serviceId, string $className): void
     {
-        // Make private reset-password-bundle services public
-        $pass = new DefinitionPublicCompilerPass();
-        $pass->definition = $definition;
+        $container = $this->getConfiguredContainer($serviceId, ['auth_service_id' => ChannelAuthenticator::class]);
+        $service = $container->get($serviceId);
 
-        $kernel = new PusherServiceDefinitionTestKernel(null, [], ['auth_service_id' => ChannelAuthenticator::class]);
+        $this->assertInstanceOf($className, $service);
+    }
+
+    /**
+     * @dataProvider bundleServiceDefinitionDataProvider
+     */
+    public function testBundleMinimalServiceDefinitions(string $serviceId, string $className, bool $expectException): void
+    {
+        if ($expectException) {
+            $this->expectException(ServiceNotFoundException::class);
+        }
+
+        $container = $this->getConfiguredContainer($serviceId);
+        $service = $container->get($serviceId);
+
+        $this->assertInstanceOf($className, $service);
+    }
+
+    private function getConfiguredContainer(string $serviceId, array $bundleConfig = []): ContainerInterface
+    {
+        // Make private services public
+        $pass = new DefinitionPublicCompilerPass();
+        $pass->definition = $serviceId;
+
+        $kernel = new PusherServiceDefinitionTestKernel(null, [], $bundleConfig);
         $kernel->compilerPass = $pass;
         $kernel->boot();
 
-        $container = $kernel->getContainer();
-        $container->get($definition);
-
-        // If a service is not correctly defined, i.e. wrong class namespace, an exception will be thrown.
-        if (method_exists($this, 'expectNotToPerformAssertions')) {
-            $this->expectNotToPerformAssertions();
-        }
+        return $kernel->getContainer();
     }
 }
 
@@ -70,9 +90,10 @@ final class DefinitionPublicCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        $container->getDefinition($this->definition)
-            ->setPublic(true)
-        ;
+        if ($container->hasDefinition($this->definition)) {
+            $container->getDefinition($this->definition)
+                ->setPublic(true);
+        }
     }
 }
 

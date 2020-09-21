@@ -7,11 +7,9 @@
 
 namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 
-use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
 use Pusher\Pusher;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -35,9 +33,7 @@ class LopiPusherExtension extends Extension
 
         if (null === $config['auth_service_id']) {
             $container->removeDefinition('lopi_pusher.auth_controller');
-        }
-
-        if ($container->hasDefinition('lopi_pusher.auth_controller')) {
+        } else {
             $controllerDefinition = $container->getDefinition('lopi_pusher.auth_controller');
             $controllerDefinition->setArgument(0, $config);
             $controllerDefinition->setArgument(1, new Reference($config['auth_service_id']));
@@ -46,7 +42,7 @@ class LopiPusherExtension extends Extension
         $pusherDefinition = $container->getDefinition('lopi_pusher.pusher');
         $pusherDefinition->setArgument(0, $config);
 
-        $container->setAlias(Pusher::class, 'lopi_pusher.pusher')->setPublic(true);
+        $container->setAlias(Pusher::class, 'lopi_pusher.pusher');
 
         if (class_exists(AbstractExtension::class)) {
             $loader->load('twig.xml');
