@@ -21,16 +21,17 @@ Use [composer](http://getcomposer.org) to install this bundle.
 composer require laupifrpar/pusher-bundle
 ```
 
-Then update your `AppKernel.php` file to register the new bundle:
+If you're not using Symfony Flex, then you will also need to enable 
+`Lopi\Bundle\PusherBundle\LopiPusherBundle` in your `config/bundles.php` file.
 
 ```php
-// in app/AppKernel::registerBundles()
+<?php
 
-$bundles = array(
+return [
     // ...
     new Lopi\Bundle\PusherBundle\LopiPusherBundle(),
     // ...
-);
+];
 ```
 
 ## Configuration
@@ -66,14 +67,14 @@ lopi_pusher:
 
 It will parse the URL and set, or replace the default value if exists, the various parameters `scheme`, `key`, `secret`, `host`, `port` and `app_id`
 
-Or you can set the various parameters separately :
+Or you can set the various parameters separately:
 
 ```yml
 # app/config/config.yml
 lopi_pusher:
-	app_id: <app-id>
-	key: <key>
-	secret: <secret>
+    app_id: <app-id>
+    key: <key>
+    secret: <secret>
 ```
 
 By default, calls will be made over a non-encrypted connection. To change this to
@@ -83,7 +84,7 @@ make calls over HTTPS, simply:
 # app/config/config.yml
 lopi_pusher:
     # ...
-	scheme: https
+    scheme: https
     port: 443
 ```
 
@@ -92,6 +93,7 @@ If you want to use private or presence channels, set the parameter `auth_service
 ```yml
 # app/config/config.yml
 lopi_pusher:
+    # ...
     auth_service_id: <the_auth_service_id>
 ```
 
@@ -99,24 +101,28 @@ See the section about "Private and Presense channel auth" below
 
 ## Usage!
 
-Once you've configured the bundle, you will have access to a `lopi_pusher.pusher`
-service. From inside a controller, you can use it like this:
+Once you've configured the bundle, you will have access to a pusher service,
+which can be autowired by `Pusher\Pusher` typehint.
+From inside a controller, you can use it like this:
 
 ```php
-public function triggerPusherAction()
+use Pusher\Pusher;
+
+class SampleController 
 {
-    /** @var \Pusher $pusher */
-    $pusher = $this->container->get('lopi_pusher.pusher');
-
-    $data['message'] = 'hello world';
-    $pusher->trigger('test_channel', 'my_event', $data);
-
-    // ...
+    public function triggerPusherAction(Pusher $pusher)
+    {
+        // ...
+    
+        $data['message'] = 'hello world';
+        $pusher->trigger('test_channel', 'my_event', $data);
+    
+        // ...
+    }
 }
 ```
 
-The `lopi_pusher.pusher` returns an instance of the `\Pusher` class from the official
-Pusher SDK. You can find out all about it on
+This code will autowire `\Pusher\Pusher` class from the official Pusher SDK. You can find out all about it on
 [pusher's documentation](https://github.com/pusher/pusher-php-server#publishingtriggering-events).
 
 ## Private and Presence channel authentication (optional)
@@ -127,9 +133,9 @@ First, create an authorization service that implements `Lopi\Bundle\PusherBundle
 
 ```php
 <?php
-// src/AppBundle/Pusher/ChannelAuthenticator.php
+// src/Pusher/ChannelAuthenticator.php
 
-namespace AppBundle\Pusher
+namespace App\Pusher;
 
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
 
@@ -147,29 +153,27 @@ class ChannelAuthenticator implements ChannelAuthenticatorInterface
 Next, register it as service like normal:
 
 ```yml
-# app/config/services.yml
+# config/services.yml
 services:
-    my_channel_authenticator:
-        class: AppBundle\Pusher\ChannelAuthenticator
-        arguments: []
+    my_channel_authenticator: AppBundle\Pusher\ChannelAuthenticator
 ```
 
 Then include its **service id** in the lopi_pusher `auth_service_id` configuration
 parameter:
 
 ```yml
-# app/config/config.yml
+# config/packagers/lopi_pusher.yml
 lopi_pusher:
     # ...
 
-    auth_service_id: my_channel_authenticator
+    auth_service_id: 'my_channel_authenticator'
 ```
 
-Additionally, enable the route by adding the following to your `app\config\routing.yml`
+Additionally, enable the route by adding the following to your `config\routing.yml`
 configuration:
 
 ```yml
-# app\config\routing.yml
+# config\routing.yml
 lopi_pusher:
     resource: "@LopiPusherBundle/Resources/config/routing.xml"
     prefix:   /pusher
