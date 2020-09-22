@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Lopi\Bundle\PusherBundle;
 
 final class PusherConfiguration
@@ -23,7 +28,7 @@ final class PusherConfiguration
         // For backwards compatibility with deprecated host argument
         if (preg_match('(^(https?://))', $config['host'], $matches)) {
             $config['scheme'] = substr($matches[0], 0, -3);
-            $config['host'] = substr($config['host'], strlen($matches[0]));
+            $config['host'] = substr($config['host'], \strlen($matches[0]));
         }
 
         $this->authKey = $config['key'];
@@ -59,6 +64,4 @@ final class PusherConfiguration
     {
         return $this->options;
     }
-
-
 }

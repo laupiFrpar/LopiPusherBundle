@@ -26,7 +26,7 @@ class PusherExtension extends AbstractExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         return [
-            'pusher_key' => $this->configuration->getAuthKey()
+            'pusher_key' => $this->configuration->getAuthKey(),
         ];
     }
 }

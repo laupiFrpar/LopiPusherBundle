@@ -8,21 +8,21 @@
 namespace Lopi\Bundle\PusherBundle\Authenticator;
 
 /**
- * ChannelAuthenticatorPresenceInterface
+ * ChannelAuthenticatorPresenceInterface.
  *
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>
  */
 interface ChannelAuthenticatorPresenceInterface extends ChannelAuthenticatorInterface
 {
     /**
-     * Returns an optional array of user info
+     * Returns an optional array of user info.
      *
      * @return array
      */
     public function getUserInfo();
 
     /**
-     * Return the user id when authenticated, used for presence channels
+     * Return the user id when authenticated, used for presence channels.
      *
      * @return string
      */

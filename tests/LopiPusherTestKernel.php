@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Lopi\Bundle\PusherBundle\Tests;
 
 use Lopi\Bundle\PusherBundle\LopiPusherBundle;
@@ -28,7 +33,7 @@ class LopiPusherTestKernel extends Kernel
         return array_merge(
             [
                 new FrameworkBundle(),
-                new LopiPusherBundle()
+                new LopiPusherBundle(),
             ],
             $this->extraBundles
         );
@@ -57,11 +62,10 @@ class LopiPusherTestKernel extends Kernel
                     [
                         'app_id' => 'fake_id',
                         'key' => 'fake_key',
-                        'secret' => 'fake_secret'
+                        'secret' => 'fake_secret',
                     ],
                     $this->config
                 )
-
             );
 
             if ($container->hasExtension('twig')) {
@@ -70,7 +74,7 @@ class LopiPusherTestKernel extends Kernel
                     [
                         'exception_controller' => null,
                         'strict_variables' => null,
-                        'default_path' => __DIR__.'/Fixtures/templates'
+                        'default_path' => __DIR__.'/Fixtures/templates',
                     ]
                 );
             }
@@ -83,11 +87,11 @@ class LopiPusherTestKernel extends Kernel
 
     public function getCacheDir()
     {
-        return \sys_get_temp_dir().'/cache'.\spl_object_hash($this);
+        return sys_get_temp_dir().'/cache'.spl_object_hash($this);
     }
 
     public function getLogDir()
     {
-        return \sys_get_temp_dir().'/logs'.\spl_object_hash($this);
+        return sys_get_temp_dir().'/logs'.spl_object_hash($this);
     }
 }

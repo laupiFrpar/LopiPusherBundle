@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Lopi\Bundle\PusherBundle\Tests\IntegrationTests;
 
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
@@ -67,7 +72,6 @@ final class PusherServiceDefinitionTest extends TestCase
  */
 final class ChannelAuthenticator implements ChannelAuthenticatorPresenceInterface
 {
-
     public function authenticate($socketId, $channelName)
     {
     }

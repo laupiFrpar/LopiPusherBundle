@@ -11,11 +11,11 @@ use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
 use Lopi\Bundle\PusherBundle\PusherConfiguration;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * AuthController
+ * AuthController.
  *
  * @author Richard Fullmer <richard.fullmer@opensoftdev.com>
  * @author Pierre-Louis Launay <laupi.frpar@gmail.com>
@@ -33,15 +33,15 @@ class AuthController
 
     /**
      * Implement http://pusher.com/docs/authenticating_users
-     * and       http://pusher.com/docs/auth_signatures
+     * and       http://pusher.com/docs/auth_signatures.
      */
     public function authAction(Request $request): Response
     {
         $socketId = $request->get('socket_id');
 
         $channelNames = $request->get('channel_name');
-        if (is_array($channelNames)) {
-            $combineResponse = array();
+        if (\is_array($channelNames)) {
+            $combineResponse = [];
             foreach ($channelNames as $channelName) {
                 $responseData = $this->authenticateChannel($socketId, $channelName);
 
@@ -69,22 +69,22 @@ class AuthController
     /**
      * Perform channel autentication.
      *
-     * @param string $socketId The socket id
-     * @param string $channelName Name of the channel to validate.
+     * @param string $socketId    The socket id
+     * @param string $channelName name of the channel to validate
      *
-     * @return array Response auth data or null on access denied.
+     * @return array response auth data or null on access denied
      */
     private function authenticateChannel(string $socketId, string $channelName): ?array
     {
-        $responseData = array();
+        $responseData = [];
         $data = $socketId.':'.$channelName;
 
         if (!$this->authenticator->authenticate($socketId, $channelName)) {
             return null;
         }
 
-        if (strpos($channelName, 'presence') === 0 && $this->authenticator instanceof ChannelAuthenticatorPresenceInterface) {
-            $responseData['channel_data'] = \json_encode([
+        if (0 === strpos($channelName, 'presence') && $this->authenticator instanceof ChannelAuthenticatorPresenceInterface) {
+            $responseData['channel_data'] = json_encode([
                 'user_id' => $this->authenticator->getUserId(),
                 'user_info' => $this->authenticator->getUserInfo(),
             ]);
@@ -97,7 +97,7 @@ class AuthController
     }
 
     /**
-     * Get the hashed data
+     * Get the hashed data.
      *
      * @param string $data The data to hash
      */

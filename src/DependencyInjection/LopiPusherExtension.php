@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Twig\Extension\AbstractExtension;
 
 /**
- * LopiPusherExtension
+ * LopiPusherExtension.
  */
 class LopiPusherExtension extends Extension
 {
