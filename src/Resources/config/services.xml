@@ -6,14 +6,18 @@
 
     <services>
 
-        <service id="lopi_pusher.auth_controller" class="Lopi\Bundle\PusherBundle\Controller\AuthController">
+        <service id="lopi_pusher.pusher_configuration" class="Lopi\Bundle\PusherBundle\PusherConfiguration">
             <argument/> <!-- bundle configuration array -->
+        </service>
+
+        <service id="lopi_pusher.auth_controller" class="Lopi\Bundle\PusherBundle\Controller\AuthController">
+            <argument type="service" id="lopi_pusher.pusher_configuration"/>
             <argument/> <!-- Channel authenticator service implemented by user-->
         </service>
 
         <service id="lopi_pusher.pusher" class="Pusher\Pusher" public="false">
-            <factory class="Lopi\Bundle\PusherBundle\DependencyInjection\PusherFactory" method="create"/>
-            <argument/> <!-- bundle configuration array -->
+            <factory class="Lopi\Bundle\PusherBundle\PusherFactory" method="create"/>
+            <argument type="service" id="lopi_pusher.pusher_configuration"/> <!-- bundle configuration array -->
         </service>
 
     </services>

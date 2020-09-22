@@ -31,16 +31,15 @@ class LopiPusherExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
+        $pusherConfigurationDefinition = $container->getDefinition('lopi_pusher.pusher_configuration');
+        $pusherConfigurationDefinition->setArgument(0, $config);
+
         if (null === $config['auth_service_id']) {
             $container->removeDefinition('lopi_pusher.auth_controller');
         } else {
             $controllerDefinition = $container->getDefinition('lopi_pusher.auth_controller');
-            $controllerDefinition->setArgument(0, $config);
             $controllerDefinition->setArgument(1, new Reference($config['auth_service_id']));
         }
-
-        $pusherDefinition = $container->getDefinition('lopi_pusher.pusher');
-        $pusherDefinition->setArgument(0, $config);
 
         $container->setAlias(Pusher::class, 'lopi_pusher.pusher');
 

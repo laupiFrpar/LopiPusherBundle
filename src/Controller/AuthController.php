@@ -9,6 +9,7 @@ namespace Lopi\Bundle\PusherBundle\Controller;
 
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
+use Lopi\Bundle\PusherBundle\PusherConfiguration;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,12 +22,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuthController
 {
-    private $pusherConfig;
+    private $configuration;
     private $authenticator;
 
-    public function __construnct(array $pusherConfig, ChannelAuthenticatorInterface $authenticator)
+    public function __construnct(PusherConfiguration $configuration, ChannelAuthenticatorInterface $authenticator)
     {
-        $this->pusherConfig = $pusherConfig;
+        $this->configuration = $configuration;
         $this->authenticator = $authenticator;
     }
 
@@ -90,7 +91,7 @@ class AuthController
             $data .= ':'.$responseData['channel_data'];
         }
 
-        $responseData['auth'] = $this->pusherConfig['key'].':'.$this->getCode($data);
+        $responseData['auth'] = $this->configuration->getAuthKey().':'.$this->getCode($data);
 
         return $responseData;
     }
@@ -102,6 +103,6 @@ class AuthController
      */
     private function getCode($data): string
     {
-        return hash_hmac('sha256', $data, $this->pusherConfig['secret']);
+        return hash_hmac('sha256', $data, $this->configuration->getSecret());
     }
 }
