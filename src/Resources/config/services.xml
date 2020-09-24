@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="lopi_pusher.pusher_configuration" class="Lopi\Bundle\PusherBundle\PusherConfiguration">
+            <argument/> <!-- bundle configuration array -->
+        </service>
+
+        <service id="lopi_pusher.auth_controller" class="Lopi\Bundle\PusherBundle\Controller\AuthController">
+            <argument type="service" id="lopi_pusher.pusher_configuration"/>
+            <argument/> <!-- Channel authenticator service implemented by user-->
+        </service>
+
+        <service id="lopi_pusher.pusher" class="Pusher\Pusher" public="false">
+            <factory class="Lopi\Bundle\PusherBundle\PusherFactory" method="create"/>
+            <argument type="service" id="lopi_pusher.pusher_configuration"/> <!-- bundle configuration array -->
+        </service>
+
+    </services>
+</container>

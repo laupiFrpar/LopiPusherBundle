@@ -15,8 +15,10 @@ xcuserdata
 # svn & cvs
 .svn
 CVS
-
+.php_cs.cache
 vendor
 
 composer.lock
 *.sublime-workspace
+.phpunit.result.cache
+phpunit.xml

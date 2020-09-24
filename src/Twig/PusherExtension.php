@@ -7,7 +7,7 @@
 
 namespace Lopi\Bundle\PusherBundle\Twig;
 
-use Pusher\Pusher;
+use Lopi\Bundle\PusherBundle\PusherConfiguration;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 
@@ -16,23 +16,17 @@ use Twig\Extension\GlobalsInterface;
  */
 class PusherExtension extends AbstractExtension implements GlobalsInterface
 {
-    private $pusher;
+    private $configuration;
 
-    /**
-     * @param Pusher $pusher
-     */
-    public function __construct(Pusher $pusher)
+    public function __construct(PusherConfiguration $configuration)
     {
-        $this->pusher = $pusher;
+        $this->configuration = $configuration;
     }
 
-    /**
-     * @return array
-     */
     public function getGlobals(): array
     {
         return [
-            'pusher_key' => $this->pusher->getSettings()['auth_key'],
+            'pusher_key' => $this->configuration->getAuthKey(),
         ];
     }
 }

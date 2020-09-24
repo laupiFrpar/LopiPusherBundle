@@ -7,15 +7,16 @@
 
 namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 
+use Pusher\Pusher;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Twig\Extension\AbstractExtension;
 
 /**
- * LopiPusherExtension
- *
+ * LopiPusherExtension.
  */
 class LopiPusherExtension extends Extension
 {
@@ -27,25 +28,23 @@ class LopiPusherExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('lopi_pusher.config', $config);
-
-        if (null !== $config['auth_service_id']) {
-            $container->setAlias('lopi_pusher.authenticator', $config['auth_service_id'])->setPublic(true);
-        }
-
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        $pusherConfigurationDefinition = $container->getDefinition('lopi_pusher.pusher_configuration');
+        $pusherConfigurationDefinition->setArgument(0, $config);
+
+        if (null === $config['auth_service_id']) {
+            $container->removeDefinition('lopi_pusher.auth_controller');
+        } else {
+            $controllerDefinition = $container->getDefinition('lopi_pusher.auth_controller');
+            $controllerDefinition->setArgument(1, new Reference($config['auth_service_id']));
+        }
+
+        $container->setAlias(Pusher::class, 'lopi_pusher.pusher');
 
         if (class_exists(AbstractExtension::class)) {
             $loader->load('twig.xml');
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return 'lopi_pusher';
     }
 }
