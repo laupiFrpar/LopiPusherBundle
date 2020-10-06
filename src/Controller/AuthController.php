@@ -25,7 +25,7 @@ class AuthController
     private $configuration;
     private $authenticator;
 
-    public function __construnct(PusherConfiguration $configuration, ChannelAuthenticatorInterface $authenticator)
+    public function __construct(PusherConfiguration $configuration, ChannelAuthenticatorInterface $authenticator)
     {
         $this->configuration = $configuration;
         $this->authenticator = $authenticator;
