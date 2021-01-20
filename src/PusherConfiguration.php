@@ -17,12 +17,12 @@ final class PusherConfiguration
     public function __construct(array $config)
     {
         if (!empty($config['url'])) {
-            $config['app_id'] = substr(parse_url($config['url'], PHP_URL_PATH), 6);
-            $config['key'] = parse_url($config['url'], PHP_URL_USER);
-            $config['secret'] = parse_url($config['url'], PHP_URL_PASS);
-            $config['scheme'] = parse_url($config['url'], PHP_URL_SCHEME);
-            $config['host'] = parse_url($config['url'], PHP_URL_HOST);
-            $config['port'] = parse_url($config['url'], PHP_URL_PORT) ?: $config['port'];
+            $config['app_id'] = substr(parse_url($config['url'], \PHP_URL_PATH), 6);
+            $config['key'] = parse_url($config['url'], \PHP_URL_USER);
+            $config['secret'] = parse_url($config['url'], \PHP_URL_PASS);
+            $config['scheme'] = parse_url($config['url'], \PHP_URL_SCHEME);
+            $config['host'] = parse_url($config['url'], \PHP_URL_HOST);
+            $config['port'] = parse_url($config['url'], \PHP_URL_PORT) ?: $config['port'];
         }
 
         // For backwards compatibility with deprecated host argument
