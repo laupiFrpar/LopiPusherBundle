@@ -18,7 +18,7 @@ env:
 before_install:
     - find ~/.phpenv -name xdebug.ini -delete
     - composer self-update
-    - composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
+    - composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-main
     - composer update --prefer-source
 
 install:
