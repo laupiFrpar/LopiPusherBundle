@@ -7,6 +7,7 @@
 
 namespace Lopi\Bundle\PusherBundle\DependencyInjection;
 
+use Lopi\Bundle\PusherBundle\Controller\AuthController;
 use Pusher\Pusher;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,9 +36,9 @@ class LopiPusherExtension extends Extension
         $pusherConfigurationDefinition->setArgument(0, $config);
 
         if (null === $config['auth_service_id']) {
-            $container->removeDefinition('lopi_pusher.auth_controller');
+            $container->removeDefinition(AuthController::class);
         } else {
-            $controllerDefinition = $container->getDefinition('lopi_pusher.auth_controller');
+            $controllerDefinition = $container->getDefinition(AuthController::class);
             $controllerDefinition->setArgument(1, new Reference($config['auth_service_id']));
         }
 

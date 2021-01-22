@@ -10,9 +10,10 @@
             <argument/> <!-- bundle configuration array -->
         </service>
 
-        <service id="lopi_pusher.auth_controller" class="Lopi\Bundle\PusherBundle\Controller\AuthController">
+        <service id="Lopi\Bundle\PusherBundle\Controller\AuthController">
             <argument type="service" id="lopi_pusher.pusher_configuration"/>
             <argument/> <!-- Channel authenticator service implemented by user-->
+            <tag name="controller.service_arguments"/>
         </service>
 
         <service id="lopi_pusher.pusher" class="Pusher\Pusher" public="false">

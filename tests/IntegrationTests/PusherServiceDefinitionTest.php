@@ -24,7 +24,7 @@ final class PusherServiceDefinitionTest extends TestCase
         $prefix = 'lopi_pusher.';
 
         yield [$prefix.'pusher',  Pusher::class, false];
-        yield [$prefix.'auth_controller', AuthController::class, true];
+        yield [AuthController::class, AuthController::class, true];
     }
 
     /**
