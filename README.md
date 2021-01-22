@@ -29,7 +29,7 @@ If you're not using Symfony Flex, then you will also need to enable
 
 return [
     // ...
-    new Lopi\Bundle\PusherBundle\LopiPusherBundle(),
+    Lopi\Bundle\PusherBundle\LopiPusherBundle::class => ['all' => true],
     // ...
 ];
 ```
