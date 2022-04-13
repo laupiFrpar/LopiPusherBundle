@@ -9,10 +9,10 @@ namespace Lopi\Bundle\PusherBundle;
 
 final class PusherConfiguration
 {
-    private $authKey;
-    private $secret;
-    private $appId;
-    private $options;
+    private string $authKey;
+    private string $secret;
+    private string $appId;
+    private array $options;
 
     public function __construct(array $config)
     {

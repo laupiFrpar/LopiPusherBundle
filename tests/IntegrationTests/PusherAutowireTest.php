@@ -17,7 +17,7 @@ final class PusherAutowireTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testPusherIsAutowiredByContainer()
+    public function testPusherIsAutowiredByContainer(): void
     {
         $builder = new ContainerBuilder();
         $builder->autowire(PusherAutowireClass::class)

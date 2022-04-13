@@ -22,13 +22,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AuthController
 {
-    private $configuration;
-    private $authenticator;
-
-    public function __construct(PusherConfiguration $configuration, ChannelAuthenticatorInterface $authenticator)
-    {
-        $this->configuration = $configuration;
-        $this->authenticator = $authenticator;
+    public function __construct(
+        private PusherConfiguration $configuration,
+        private ChannelAuthenticatorInterface $authenticator
+    ) {
     }
 
     /**
@@ -67,12 +64,14 @@ class AuthController
     }
 
     /**
-     * Perform channel autentication.
+     * Perform channel authentication.
      *
-     * @param string $socketId    The socket id
+     * @param string $socketId The socket id
      * @param string $channelName name of the channel to validate
      *
-     * @return array response auth data or null on access denied
+     * @return array|null response auth data or null on access denied
+     *
+     * @throws \JsonException
      */
     private function authenticateChannel(string $socketId, string $channelName): ?array
     {
@@ -83,11 +82,11 @@ class AuthController
             return null;
         }
 
-        if (0 === strpos($channelName, 'presence') && $this->authenticator instanceof ChannelAuthenticatorPresenceInterface) {
+        if ($this->authenticator instanceof ChannelAuthenticatorPresenceInterface && str_starts_with($channelName, 'presence')) {
             $responseData['channel_data'] = json_encode([
                 'user_id' => $this->authenticator->getUserId(),
                 'user_info' => $this->authenticator->getUserInfo(),
-            ]);
+            ], JSON_THROW_ON_ERROR);
             $data .= ':'.$responseData['channel_data'];
         }
 

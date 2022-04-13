@@ -20,5 +20,5 @@ interface ChannelAuthenticatorInterface
      *
      * @return bool
      */
-    public function authenticate($socketId, $channelName);
+    public function authenticate(string $socketId, string $channelName): bool;
 }

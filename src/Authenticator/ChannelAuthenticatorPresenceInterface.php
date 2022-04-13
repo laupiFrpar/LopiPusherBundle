@@ -19,12 +19,12 @@ interface ChannelAuthenticatorPresenceInterface extends ChannelAuthenticatorInte
      *
      * @return array
      */
-    public function getUserInfo();
+    public function getUserInfo(): array;
 
     /**
      * Return the user id when authenticated, used for presence channels.
      *
      * @return string
      */
-    public function getUserId();
+    public function getUserId(): string;
 }
