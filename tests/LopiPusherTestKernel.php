@@ -77,6 +77,10 @@ class LopiPusherTestKernel extends Kernel
                         'default_path' => __DIR__.'/Fixtures/templates',
                     ]
                 );
+
+                $container->setAlias(\Twig\Environment::class, 'twig')
+                    ->setPublic(true)
+                ;
             }
 
             $container->register('kernel', static::class)
