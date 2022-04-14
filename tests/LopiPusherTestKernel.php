@@ -15,9 +15,9 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class LopiPusherTestKernel extends Kernel
 {
-    private $builder;
-    private $extraBundles;
-    private $config;
+    private ?ContainerBuilder $builder;
+    private array $extraBundles;
+    private array $config;
 
     public function __construct(ContainerBuilder $builder = null, array $bundles = [], array $config = [])
     {
@@ -28,7 +28,7 @@ class LopiPusherTestKernel extends Kernel
         parent::__construct('test', true);
     }
 
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return array_merge(
             [
@@ -39,7 +39,7 @@ class LopiPusherTestKernel extends Kernel
         );
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         if (null === $this->builder) {
             $this->builder = new ContainerBuilder();
@@ -77,6 +77,10 @@ class LopiPusherTestKernel extends Kernel
                         'default_path' => __DIR__.'/Fixtures/templates',
                     ]
                 );
+
+                $container->setAlias(\Twig\Environment::class, 'twig')
+                    ->setPublic(true)
+                ;
             }
 
             $container->register('kernel', static::class)
@@ -85,12 +89,12 @@ class LopiPusherTestKernel extends Kernel
         });
     }
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return sys_get_temp_dir().'/cache'.spl_object_hash($this);
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return sys_get_temp_dir().'/logs'.spl_object_hash($this);
     }

@@ -72,15 +72,15 @@ final class PusherServiceDefinitionTest extends TestCase
  */
 final class ChannelAuthenticator implements ChannelAuthenticatorPresenceInterface
 {
-    public function authenticate($socketId, $channelName)
+    public function authenticate(string $socketId, string $channelName): bool
     {
     }
 
-    public function getUserInfo()
+    public function getUserInfo(): array
     {
     }
 
-    public function getUserId()
+    public function getUserId(): string
     {
     }
 }
@@ -92,7 +92,7 @@ final class DefinitionPublicCompilerPass implements CompilerPassInterface
 {
     public $definition;
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if ($container->hasDefinition($this->definition)) {
             $container->getDefinition($this->definition)

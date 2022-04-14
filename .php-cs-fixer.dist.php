@@ -4,11 +4,11 @@ if (!file_exists(__DIR__.'/src') || !file_exists(__DIR__.'/tests')) {
     exit(0);
 }
 
-$finder = PhpCsFixer\Finder::create()
+$finder = (new \PhpCsFixer\Finder())
     ->in([__DIR__.'/src', __DIR__.'/tests'])
 ;
 
-return PhpCsFixer\Config::create()
+return (new \PhpCsFixer\Config())
     ->setRules(array(
         '@Symfony' => true,
         '@Symfony:risky' => true,
