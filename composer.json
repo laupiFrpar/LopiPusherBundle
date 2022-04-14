@@ -27,10 +27,10 @@
         "symfony/http-kernel": "^5.4|^6.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
         "symfony/framework-bundle": "^5.4|^6.0",
         "symfony/phpunit-bridge": "^5.4|^6.0",
-        "symfony/twig-bundle": "^5.4|^6.0"
+        "symfony/twig-bundle": "^5.4|^6.0",
+        "friendsofphp/php-cs-fixer": "^3.8"
     },
     "autoload": {
         "psr-4": { "Lopi\\Bundle\\PusherBundle\\": "src/" }

@@ -66,7 +66,7 @@ class AuthController
     /**
      * Perform channel authentication.
      *
-     * @param string $socketId The socket id
+     * @param string $socketId    The socket id
      * @param string $channelName name of the channel to validate
      *
      * @return array|null response auth data or null on access denied
@@ -86,7 +86,7 @@ class AuthController
             $responseData['channel_data'] = json_encode([
                 'user_id' => $this->authenticator->getUserId(),
                 'user_info' => $this->authenticator->getUserInfo(),
-            ], JSON_THROW_ON_ERROR);
+            ], \JSON_THROW_ON_ERROR);
             $data .= ':'.$responseData['channel_data'];
         }
 
@@ -100,7 +100,7 @@ class AuthController
      *
      * @param string $data The data to hash
      */
-    private function getCode($data): string
+    private function getCode(string $data): string
     {
         return hash_hmac('sha256', $data, $this->configuration->getSecret());
     }

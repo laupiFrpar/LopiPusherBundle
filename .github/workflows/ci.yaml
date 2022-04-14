@@ -1,0 +1,76 @@
+name: Bundle CI
+on:
+    push:
+        branches: ['main']
+    pull_request:
+    schedule:
+        - cron: '0 */12 * * *'
+
+jobs:
+    static-analysis:
+        name: Static Analysis
+        runs-on: ubuntu-18.04
+
+        steps:
+            - name: "Checkout code"
+              uses: "actions/checkout@v2"
+
+            - name: "Install PHP"
+              uses: "shivammathur/setup-php@v2"
+              with:
+                  coverage: "none"
+                  php-version: "8.0"
+
+            - name: "Validate composer.json"
+              run: "composer validate --strict --no-check-lock"
+
+            - name: "Composer install"
+              uses: "ramsey/composer-install@v1"
+              with:
+                  composer-options: "--prefer-stable"
+                  dependency-versions: 'highest'
+
+            - name: Install PHP-CS-Fixer
+              run: composer global require friendsofphp/php-cs-fixer --prefer-dist --no-progress
+
+            - name: Running php-cs-fixer
+              run: $HOME/.composer/vendor/bin/php-cs-fixer fix --config $GITHUB_WORKSPACE/.php-cs-fixer.dist.php --diff --dry-run
+
+    tests:
+        name: "Tests ${{ matrix.php-version }} ${{ matrix.dependency-versions }} deps ${{ matrix.dependency-versions }}"
+        runs-on: ubuntu-18.04
+
+        strategy:
+            fail-fast: false
+            matrix:
+                # normal, highest, non-dev installs
+                php-version: ['8.0', '8.1']
+                composer-options: ['--prefer-stable']
+                dependency-versions: ['highest']
+                include:
+                    # testing lowest PHP version with lowest dependencies
+                    - php-version: '8.0'
+                      dependency-versions: 'lowest'
+                      composer-options: '--prefer-lowest'
+
+        steps:
+            - name: "Checkout code"
+              uses: "actions/checkout@v2"
+
+            - name: "Install PHP"
+              uses: "shivammathur/setup-php@v2"
+              with:
+                  coverage: "none"
+                  php-version: "${{ matrix.php-version }}"
+
+            - name: Install Global Dependencies
+              run: |
+                  composer global require --no-progress --no-scripts --no-plugins symfony/flex >=1.x
+            - name: "Composer install"
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "${{ matrix.dependency-versions }}"
+                  composer-options: "--prefer-dist --no-progress"
+
+            - name: All Tests
+              run: vendor/bin/simple-phpunit -c $GITHUB_WORKSPACE/phpunit.xml.dist
