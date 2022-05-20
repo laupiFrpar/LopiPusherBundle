@@ -58,6 +58,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('port')->defaultValue('80')->end()
                 ->scalarNode('timeout')->defaultValue('30')->end()
                 ->scalarNode('auth_service_id')->defaultNull()->end()
+                ->scalarNode('encryption_master_key_base64')->defaultNull()->end()
             ->end();
 
         return $treeBuilder;
