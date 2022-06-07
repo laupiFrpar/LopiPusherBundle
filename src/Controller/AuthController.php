@@ -119,7 +119,7 @@ class AuthController
      */
     private function genSharedSecret(string $channel): string
     {
-        if (!array_key_exists('encryption_master_key_base64', $this->configuration->getOptions())) {
+        if (!\array_key_exists('encryption_master_key_base64', $this->configuration->getOptions())) {
             throw new Exception("Missing 'encryption_master_key_base64' from configuration options");
         }
 
