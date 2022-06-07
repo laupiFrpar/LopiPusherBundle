@@ -7,6 +7,9 @@
 
 namespace Lopi\Bundle\PusherBundle;
 
+/**
+ * @author Pierre-Louis Launay
+ */
 final class PusherConfiguration
 {
     private string $authKey;

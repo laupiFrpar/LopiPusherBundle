@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<ruleset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="Lopi"
+    xsi:noNamespaceSchemaLocation="phpcs.xsd"
+>
+    <description>Project coding standard</description>
+
+    <!-- <config name="ignore_warnings_on_exit" value="1" /> -->
+
+    <file>src</file>
+
+    <!-- <exclude-pattern>src/Bundle/**/tests/</exclude-pattern> -->
+    <!-- <exclude-pattern>src/Factory/*</exclude-pattern>
+    <exclude-pattern>migrations/</exclude-pattern> -->
+
+    <!-- <arg name="extensions" value="php"/>
+    <arg name="warning-severity" value="1"/>
+    <arg name="error-severity" value="1"/>
+    <arg name="colors"/> -->
+
+    <!--
+        s: show rule name
+        p: show progression
+    -->
+    <arg value="sp"/>
+
+    <rule ref="Symfony">
+        <exclude name="Symfony.Commenting.FunctionComment.Missing" />
+        <exclude name="Symfony.Commenting.FunctionComment.MissingParamTag" />
+        <exclude name="Symfony.Commenting.FunctionComment.MissingReturn" />
+    </rule>
+
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength.TooLong" />
+        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceAfter" />
+        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceBefore" />
+    </rule>
+</ruleset>

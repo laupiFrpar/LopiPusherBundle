@@ -23,10 +23,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AuthController
 {
-    public function __construct(
-        private PusherConfiguration $configuration,
-        private ChannelAuthenticatorInterface $authenticator
-    ) {
+    /**
+     * @param PusherConfiguration           $configuration
+     * @param ChannelAuthenticatorInterface $authenticator
+     */
+    public function __construct(private PusherConfiguration $configuration, private ChannelAuthenticatorInterface $authenticator)
+    {
     }
 
     /**
@@ -93,7 +95,7 @@ class AuthController
 
         $responseData['auth'] = $this->configuration->getAuthKey().':'.$this->getCode($data);
 
-        if (0 === strpos($channelName,'private-encrypted')) {
+        if (0 === strpos($channelName, 'private-encrypted')) {
             $responseData['shared_secret'] = base64_encode($this->genSharedSecret($channelName));
         }
 
@@ -113,8 +115,6 @@ class AuthController
     /**
      * Return shared secret derived from channel name and encryption master key.
      *
-     * @param string $channel
-     * @return string
      * @throws Exception
      */
     private function genSharedSecret(string $channel): string
@@ -123,6 +123,6 @@ class AuthController
             throw new Exception("Missing 'encryption_master_key_base64' from configuration options");
         }
 
-        return hash('sha256', $channel . base64_decode($this->configuration->getOptions()['encryption_master_key_base64']), true);
+        return hash('sha256', $channel.base64_decode($this->configuration->getOptions()['encryption_master_key_base64']), true);
     }
 }

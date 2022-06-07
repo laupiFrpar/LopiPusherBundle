@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 if (!file_exists(__DIR__.'/src') || !file_exists(__DIR__.'/tests')) {
     exit(0);
 }
@@ -9,7 +14,7 @@ $finder = (new \PhpCsFixer\Finder())
 ;
 
 return (new \PhpCsFixer\Config())
-    ->setRules(array(
+    ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
         '@PHPUnit75Migration:risky' => true,
@@ -22,8 +27,8 @@ return (new \PhpCsFixer\Config())
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 EOF
-        ]
-    ))
+        ],
+    ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
 ;
