@@ -43,6 +43,10 @@ final class PusherConfiguration
             'cluster' => $config['cluster'],
             'debug' => $config['debug'],
         ];
+
+        if ($encryptionKey = $config['encryption_master_key_base64'] ?? false) {
+            $this->options['encryption_master_key_base64'] = $encryptionKey;
+        }
     }
 
     public function getAuthKey(): string

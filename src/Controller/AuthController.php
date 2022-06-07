@@ -7,6 +7,7 @@
 
 namespace Lopi\Bundle\PusherBundle\Controller;
 
+use Exception;
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorInterface;
 use Lopi\Bundle\PusherBundle\Authenticator\ChannelAuthenticatorPresenceInterface;
 use Lopi\Bundle\PusherBundle\PusherConfiguration;
@@ -92,6 +93,10 @@ class AuthController
 
         $responseData['auth'] = $this->configuration->getAuthKey().':'.$this->getCode($data);
 
+        if (0 === strpos($channelName,'private-encrypted')) {
+            $responseData['shared_secret'] = base64_encode($this->genSharedSecret($channelName));
+        }
+
         return $responseData;
     }
 
@@ -103,5 +108,21 @@ class AuthController
     private function getCode(string $data): string
     {
         return hash_hmac('sha256', $data, $this->configuration->getSecret());
+    }
+
+    /**
+     * Return shared secret derived from channel name and encryption master key.
+     *
+     * @param string $channel
+     * @return string
+     * @throws Exception
+     */
+    private function genSharedSecret(string $channel): string
+    {
+        if (!array_key_exists('encryption_master_key_base64', $this->configuration->getOptions())) {
+            throw new Exception("Missing 'encryption_master_key_base64' from configuration options");
+        }
+
+        return hash('sha256', $channel . base64_decode($this->configuration->getOptions()['encryption_master_key_base64']), true);
     }
 }
