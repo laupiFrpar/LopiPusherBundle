@@ -53,6 +53,7 @@ class LopiPusherTestKernel extends Kernel
                 'framework',
                 [
                     'secret' => 'foo',
+                    'http_method_override' => true,
                 ]
             );
 
