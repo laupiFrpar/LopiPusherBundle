@@ -1,8 +1,6 @@
 # LopiPusherBundle
 
-[![Build Status](https://travis-ci.org/laupiFrpar/LopiPusherBundle.svg?branch=master)](https://travis-ci.org/laupiFrpar/LopiPusherBundle)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/fc5c7590-2d84-47b0-b1e9-82b72c69767a/mini.png)](https://insight.sensiolabs.com/projects/fc5c7590-2d84-47b0-b1e9-82b72c69767a)
-[![Maintainability](https://api.codeclimate.com/v1/badges/76235ea329f7ea57834b/maintainability)](https://codeclimate.com/github/laupiFrpar/LopiPusherBundle/maintainability)
+[![Bundle CI](https://github.com/laupiFrpar/LopiPusherBundle/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/laupiFrpar/LopiPusherBundle/actions/workflows/ci.yaml)
 
 This bundle let you use Pusher simply.
 
@@ -21,7 +19,7 @@ Use [composer](http://getcomposer.org) to install this bundle.
 composer require laupifrpar/pusher-bundle
 ```
 
-If you're not using Symfony Flex, then you will also need to enable 
+If you're not using Symfony Flex, then you will also need to enable
 `Lopi\Bundle\PusherBundle\LopiPusherBundle` in your `config/bundles.php` file.
 
 ```php
@@ -41,7 +39,7 @@ and make a note of your API key before continuing.
 
 ### General
 
-To start, you'll need to setup a bit of configuration. 
+To start, you'll need to setup a bit of configuration.
 
 This is the default configuration in yml:
 
@@ -108,15 +106,15 @@ From inside a controller, you can use it like this:
 ```php
 use Pusher\Pusher;
 
-class SampleController 
+class SampleController
 {
     public function triggerPusherAction(Pusher $pusher)
     {
         // ...
-    
+
         $data['message'] = 'hello world';
         $pusher->trigger('test_channel', 'my_event', $data);
-    
+
         // ...
     }
 }
