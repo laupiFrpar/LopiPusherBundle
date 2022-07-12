@@ -23,10 +23,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AuthController
 {
-    /**
-     * @param PusherConfiguration           $configuration
-     * @param ChannelAuthenticatorInterface $authenticator
-     */
     public function __construct(private PusherConfiguration $configuration, private ChannelAuthenticatorInterface $authenticator)
     {
     }
