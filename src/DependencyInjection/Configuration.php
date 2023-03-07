@@ -46,6 +46,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('secret')->end()
                 ->scalarNode('cluster')->defaultValue('us-east-1')->end()
                 ->booleanNode('debug')->defaultValue(false)->end()
+                ->booleanNode('verifySSL')->defaultValue(true)->end()
                 ->scalarNode('scheme')->defaultValue('http')->end()
                 ->scalarNode('host')->defaultValue('api.pusherapp.com')->end()
                 ->scalarNode('port')->defaultValue('80')->end()

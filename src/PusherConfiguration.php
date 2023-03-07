@@ -45,7 +45,13 @@ final class PusherConfiguration
             'timeout' => $config['timeout'],
             'cluster' => $config['cluster'],
             'debug' => $config['debug'],
+            // Configuration for Guzzle:
+            'clientConfig' => [],
         ];
+
+        if (is_bool($config['verifySSL'] ?? null)) {
+            $this->options['clientConfig']['verify'] = $config['verifySSL'];
+        }
 
         if ($encryptionKey = $config['encryption_master_key_base64'] ?? false) {
             $this->options['encryption_master_key_base64'] = $encryptionKey;
@@ -67,6 +73,9 @@ final class PusherConfiguration
         return $this->appId;
     }
 
+    /**
+     * @phpstan-return array{scheme: string, host: string, port: positive-int, timeout: positive-int, cluster: string, debug: bool, clientConfig: array<mixed>}
+     */
     public function getOptions(): array
     {
         return $this->options;
