@@ -7,6 +7,7 @@
 
 namespace Lopi\Bundle\PusherBundle;
 
+use GuzzleHttp\Client;
 use Pusher\Pusher;
 
 /**
@@ -23,7 +24,8 @@ class PusherFactory
             $configuration->getAuthKey(),
             $configuration->getSecret(),
             $configuration->getAppId(),
-            $configuration->getOptions()
+            $configuration->getOptions(),
+            new Client($configuration->getOptions()['clientConfig']),
         );
     }
 }
